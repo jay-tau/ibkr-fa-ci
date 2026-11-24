@@ -1,0 +1,46 @@
+                 STOCK PLAN SERVICES REPORT
+                 February 1, 2026 - March 31, 2026
+
+                 TAX PAYER
+                   Participant Number: I99999999
+                 STOCK PLAN SERVICES REPORT
+                 February 1, 2026 - March 31, 2026
+
+                   Participant Number: I99999999
+                 STOCK PLAN SERVICES REPORT
+                 February 1, 2026 - March 31, 2026
+
+                   Participant Number: I99999999
+       Your Stock Plan Account Value:                 $653.36
+          Ending Account Value Incl. AI               $653.36
+                                              This Period      Year-to-Date
+Subtractions                                       -0.37             -0.37
+  Taxes Withheld                                   -0.37             -0.37
+
+                                                            Income Summary
+                                                                                This Period   Year-to-Date
+                                                            Taxable                  $1.46          $1.46
+                                                               Dividends              1.46           1.46
+                                                            Total                    $1.46          $1.46
+Holdings
+Stocks
+Common Stock
+EXAMPLE CORP (XESP)   unavailable   3.482   $187.6400   $653.36   $668.96   -$15.60   $5.85
+ 0.895%
+Total Stocks (100% of account holdings)   unavailable   $653.36   $668.96   -$15.60   $5.85
+Total Holdings   $653.36   $668.96   -$15.60   $5.85
+Dividends, Interest & Other Income
+(Includes dividend reinvestment)
+Date Security Name CUSIP Description Quantity Price Amount
+03/05 EXAMPLE CORP 99999E104 Dividend Received - - $1.46
+Total Dividends, Interest & Other Income $1.46
+Taxes Withheld
+Date Security Description Amount
+03/05 EXAMPLE CORP Non-Resident Tax -$0.37
+Total Federal Taxes Withheld -0.37
+Total Taxes Withheld -$0.37
+Core Fund Activity
+Date Type Transaction Description Quantity Price Amount Balance
+03/05 CASH You Bought FID TREASURY ONLY MMKT FUND CL OUS 1.090 $1.0000 $1.09 $1.09
+Total Core Fund Activity $1.09
+Items shown under "Stock Plans" represent your interests under your company's stock plans, for which Fidelity Stock Plan Services LLC provides administrative and record keeping services.

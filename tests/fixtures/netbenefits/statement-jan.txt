@@ -1,0 +1,27 @@
+                 STOCK PLAN SERVICES REPORT
+                 January 1, 2026 - January 31, 2026
+
+                 TAX PAYER
+                   Participant Number: I99999999
+                 STOCK PLAN SERVICES REPORT
+                 January 1, 2026 - January 31, 2026
+
+                   Participant Number: I99999999
+                 STOCK PLAN SERVICES REPORT
+                 January 1, 2026 - January 31, 2026
+
+                   Participant Number: I99999999
+       Your Stock Plan Account Value:                 -
+Securities Bought & Sold
+  Settlement Symbol/ Transaction
+  Date Security Name CUSIP Description Quantity Price Cost Amount
+i 01/05 EXAMPLE CORP ESPP### 99999E104 You Bought 3.482 $192.12000 - -$668.96
+  Total Securities Bought - -$668.96
+  Net Securities Bought & Sold - -$668.96
+Other Activity In
+Settlement Symbol/ Transaction
+Date Security Name CUSIP Description Quantity Price Cost Amount
+01/05 SPP PURCHASE CREDIT Journaled - - - $668.96
+Total Other Activity In - $668.96
+i   Purchase of stock through your company stock plan.
+Items shown under "Stock Plans" represent your interests under your company's stock plans, for which Fidelity Stock Plan Services LLC provides administrative and record keeping services.

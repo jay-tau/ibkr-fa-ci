@@ -1,0 +1,903 @@
+# Provenance for dtaa_dividend_rates.csv
+#
+# Vendored India DTAA dividend treatment data. Form 67 (CBDT Statement
+# of income from a country or specified territory outside India and
+# Foreign Tax Credit) uses it to populate:
+#
+#   * Column (9): Article No. of Double Taxation Avoidance Agreement
+#   * Column (10): Rate of tax as per Double Taxation Avoidance Agreement
+#
+# Schedule FSI uses the separate relief article. The table also gates the
+# §90 vs §91 vs "unknown" branching of the relief computation that
+# populates Form 67 columns (11) / (12) / (13).
+#
+# ---------------------------------------------------------------------
+# Scope of v1
+#
+# v1 covers DIVIDEND-source income only (Form 67's
+# Form67SourceOfIncome.DIVIDEND), matching the current Form 67
+# compute layer's single-source v1 scope at
+# src/ibkr_fa/compute/form67.py (the DIVIDEND-only emission is
+# bounded by the Activity Statement's Dividends-section WHT
+# coverage). Interest / royalty / fees-for-technical-services
+# article + rate vendoring will be added as separate per-source CSVs
+# or extended columns when Form 67 compute begins emitting non-
+# DIVIDEND rows.
+#
+# v1 is also CONSERVATIVE on country coverage: only countries whose
+# treaty article + rate (for DTAA entries) or whose ABSENCE from
+# India's comprehensive DTAA list (for no_dtaa entries) we have
+# directly verified against an authoritative source during this PR.
+# This is the safe shape — see "Tri-state lookup semantics" below
+# for how the loader distinguishes a vendored no_dtaa row from an
+# unvendored (unknown) country.
+#
+# ---------------------------------------------------------------------
+# CSV schema (8 columns)
+#
+#   iso_alpha2                       ISO 3166-1 alpha-2 country code
+#                                    (the lookup key; matches the
+#                                    convention from
+#                                    itr_country_codes.csv).
+#   country_name                     Title-case display name.
+#   applicability                    One of {dtaa, no_dtaa}. See
+#                                    "Tri-state lookup semantics".
+#   withholding_article              The DTAA article that caps the
+#                                    source-country withholding on
+#                                    dividends (e.g., "Article 10(2)(b)"
+#                                    of the India-US DTAA). EMPTY for
+#                                    no_dtaa entries.
+#   relief_article                   The DTAA article that grants
+#                                    India the right to allow the
+#                                    foreign tax as a credit
+#                                    (e.g., "Article 25(2)(a)" of the
+#                                    India-US DTAA). EMPTY for
+#                                    no_dtaa entries. Schedule FSI
+#                                    renders this article; Form 67
+#                                    col 9 renders withholding_article
+#                                    beside the treaty-rate field.
+#   portfolio_dividend_rate_percent  The treaty cap (percent) applied
+#                                    to the source-state withholding
+#                                    on the typical IBKR-investor
+#                                    case: portfolio holdings of a
+#                                    non-corporate beneficial owner
+#                                    not exceeding the
+#                                    "substantial holding" threshold
+#                                    of the relevant article (almost
+#                                    always 10% voting stock). For
+#                                    dual-rate articles like
+#                                    India-US Article 10 (15% for
+#                                    >=10% corporate; 25% in all
+#                                    other cases) we vendor the
+#                                    NON-SUBSTANTIAL rate (25% for
+#                                    US), per Article 10(2)(b)
+#                                    verbatim — this is the rate
+#                                    that applies to portfolio Indian
+#                                    individuals via IBKR. EMPTY for
+#                                    no_dtaa entries. Stored as a
+#                                    decimal-friendly string so the
+#                                    loader can parse via Decimal()
+#                                    without float precision loss.
+#   applicability_notes              Plain-text caveats: dual-rate
+#                                    sub-clauses, REIT / RIC carve-
+#                                    outs, TIEA-only relationships,
+#                                    administrative-rate divergences,
+#                                    etc. Surfaced into the loader's
+#                                    typed entry for downstream
+#                                    review-CSV rendering and
+#                                    auditor reconciliation.
+#   source_citation                  Per-row citation: official
+#                                    treaty notification, IRS / CBDT
+#                                    treaty-text URL, or — for
+#                                    no_dtaa entries — the CBDT
+#                                    DTAA-list URL with note that
+#                                    the country is absent from
+#                                    the comprehensive list.
+#
+# ---------------------------------------------------------------------
+# Tri-state lookup semantics (CRITICAL)
+#
+# The loader returns ONE of THREE states for a queried ISO
+# alpha-2 code:
+#
+#   1. vendored, applicability = "dtaa"
+#        → §90 / §90A pathway applies. The compute layer can populate
+#          Form 67 col 9 (article) + col 10 (rate). v1 writer wiring
+#          uses withholding_article for col 9; Schedule FSI uses
+#          relief_article for its relief-article field.
+#
+#   2. vendored, applicability = "no_dtaa"
+#        → §91 unilateral relief pathway applies (or no relief is
+#          available, depending on whether the source country
+#          actually taxes the dividend). Form 67 col 9 + col 10 are
+#          left EMPTY per the model invariant
+#          (section_91_credit_inr requires both DTAA fields to be
+#          None at the model layer).
+#
+#   3. NOT vendored (lookup returns None)
+#        → UNKNOWN. The compute layer must NOT silently default to
+#          §91; doing so would mis-attribute relief for any DTAA
+#          country we have not yet vendored. v1 contract: leave
+#          Form 67 cols 9-13 None for unknown countries and surface
+#          the unvendored-country list via a downstream advisory
+#          (the post-#221 review pattern). This is the BLOCKING
+#          design point flagged by the step-4/N planning rubber-
+#          duck — absence-equals-no-DTAA is dangerous given partial
+#          coverage.
+#
+# ---------------------------------------------------------------------
+# Sources verified during initial PR
+#
+# US (Article 10(2)(b) 25%; Article 25(2)(a) relief): verbatim
+# verified against the IRS-hosted Convention Between the United
+# States of America and India PDF
+# https://www.irs.gov/pub/irs-trty/india.pdf (signed 1989-09-12,
+# entered into force 1990-12-18). The PDF was fetched on
+# 2026-06-05 (2.5MB, PDF 1.6) and pdftotext -layout extracted
+# cleanly. Article 10 verbatim text at lines 1177-1292 of the
+# extracted layout (Article 11 begins at line 1293); Article 25
+# at lines 2351-2464 (Article 26 begins at line 2465). The 25%
+# rate is the cap for "all other cases" (Article 10(2)(b)),
+# including portfolio Indian individuals; 15% (Article 10(2)(a))
+# applies ONLY to corporate beneficial owners holding >= 10%
+# voting stock. The PDF further specifies that 10(2)(b) (not
+# 10(2)(a)) applies to dividends from US Regulated Investment
+# Companies, and that 10(2)(b) applies to dividends from US Real
+# Estate Investment Trusts where the individual beneficial owner
+# holds < 10%.
+#
+# KY / BM (no_dtaa): checked on 2026-11-11 against CBDT's DTAA list
+# at
+# https://www.incometaxindia.gov.in/en/web/guest/double-taxation-avoidance-agreements
+# The page renders its list in the browser from the site's search
+# API, so the list was fetched (wget with a browser user agent) as
+# the page's own request: POST
+# https://www.incometaxindia.gov.in/o/search/v1.0/search?nestedFields=embedded&page=1&pageSize=-1
+# with the blueprint DTAA_FULL_TREATY_BP_ERC and dtaa_active true
+# (173 active records, 97 of them Comprehensive Agreements). The
+# same query with dtaa_active false returned the 43 superseded
+# "(Old)" records. Neither the Cayman Islands nor Bermuda has a
+# comprehensive or limited agreement in either list. Each is listed
+# only under Tax Information Exchange Agreement (TIEA), which
+# provides exchange of information, not relief on doubly taxed
+# income:
+#   * Bermuda: notified under section 90 by Notification No. 5/2011
+#     [F. No. 503/2/2009-FTD-I] dated 2011-01-24,
+#     https://www.incometaxindia.gov.in/w/bermuda-tax-information-exchange-agreement-tiea-1
+#   * Cayman Islands: notified under section 90 by Notification
+#     No. 61/2011 [F. No. 503/03/2009-FTD-I], S.O. 2902(E), dated
+#     2011-12-27,
+#     https://www.incometaxindia.gov.in/w/cayman-islands-tax-information-exchange-agreement-tiea-1
+#
+# HK (Article 10(2) 5%; Article 23(2)(a) relief): until #1146 this
+# row was no_dtaa, checked only against secondary sources. India and
+# the Hong Kong Special Administrative Region of the People's
+# Republic of China signed a comprehensive DTAA on 19 March 2018. It
+# entered into force on 30 November 2018, and India notified it
+# under §90(1) by CBDT Notification No. 89/2018, S.O. 6247(E)
+# [F. No. 500/124/97-FTD-II], dated 2018-12-21. Under Article
+# 29(3)(b) it has effect in India for income derived in any fiscal
+# year beginning on or after 1 April 2019, that is FY 2019-20
+# onward. Sources, fetched on 2026-11-11:
+#   * CBDT's DTAA list (as for KY / BM above) has "Hong Kong :
+#     Comprehensive Agreements", entry into force 2018-11-30. Its
+#     record, https://www.incometaxindia.gov.in/w/hong-kong-comprehensive-agreements-1,
+#     carries the notification ("NOTIFICATION: NO. S.O. 6247(E)
+#     [NO.89/2018/F.NO.500/124/97-FTD-II], DATED 21-12-2018") and
+#     the Agreement text, Articles 10 and 23 included.
+#   * The Inland Revenue Department's synthesised text of the
+#     Agreement as modified by the MLI,
+#     https://www.ird.gov.hk/eng/pdf/Synthesised_Text_HKSAR_India.pdf
+#     (393,743 bytes; PDF 1.6; 39 pages); pdftotext -layout
+#     extracted cleanly. Article 10 verbatim text at lines 681-735
+#     (Article 11 begins at line 736); Article 23 at lines
+#     1206-1253 (Article 24 begins at line 1254). IRD's treaty table
+#     (https://www.ird.gov.hk/eng/tax/dta_inc.htm) gives the same
+#     dates: signed 19.03.2018, in force 30.11.2018.
+#
+# Article 10(2) reads verbatim "... if the beneficial owner of the
+# dividends is a resident of the other Contracting Party, the tax so
+# charged shall not exceed 5 per cent of the gross amount of the
+# dividends." That is one rate for every beneficial owner type, so
+# col 9 cites "Article 10(2)" with no sub-paragraph. Within Article
+# 10 the MLI changes only paragraph 6, the main-purpose rule
+# ("SUPERSEDED by paragraph 1 of Article 7 of the MLI to the extent
+# of incompatibility"); the 5% rate is unchanged. Article 23(2)(a)
+# is India's credit clause: "India shall allow as a deduction from
+# the tax on the income of that resident, an amount equal to the tax
+# paid in the Hong Kong Special Administrative Region", capped at
+# the Indian tax attributable to that income.
+#
+# In practice Hong Kong doesn't withhold tax on dividends, because
+# dividends are not chargeable to tax in Hong Kong (IRD
+# Departmental Interpretation and Practice Notes No. 44 (Revised),
+# paragraph 86, https://www.ird.gov.hk/eng/pdf/dipn44.pdf). Any Hong
+# Kong tax that is withheld goes down the §90 route. The old row's
+# note that Hong Kong income might be relieved through the
+# India-China DTAA is dropped: the India-Hong Kong Agreement is the
+# treaty that applies.
+#
+# ---------------------------------------------------------------------
+# Sources verified in country-expansion sub-PRs
+#
+# SG (Article 10(2)(b) 15%; Article 25(2) relief): verbatim verified
+# against the taxsutra-hosted Singapore-India DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/SINGAPORE.pdf
+# (notified GSR 610(E) dated 1994-08-08). The PDF was fetched on
+# 2026-06-06 (159KB; PDF 1.5; 18 pages) and pdftotext -layout
+# extracted cleanly. Article 10 verbatim text at lines 249-290 of
+# the extracted layout (Article 11 begins at line 291); Article 25
+# at lines 567-617 (Article 26 begins at line 618). The 15% rate
+# is the cap for "all other cases" (Article 10(2)(b)); 10% (Article
+# 10(2)(a)) applies ONLY to corporate beneficial owners owning >=
+# 25% of the shares of the Singapore distributor. The 2005 and
+# 2016 Protocols (the latter rewriting Article 13 on capital gains)
+# and the MLI (BEPS principal-purpose test) did NOT amend the
+# Article 10 dividend rates. In practice Singapore has not imposed
+# a withholding tax on dividends paid to non-residents since 2003
+# (one-tier corporate tax system); the typical IBKR-individual case
+# has 0% Singapore withholding so the FTC computation yields zero
+# foreign tax to credit; the entry is vendored for completeness and
+# to handle the rare case where Singapore-source dividend is
+# nonetheless withheld.
+#
+# IE (Article 10(2) 10%; Article 23(2) relief): verbatim verified
+# against the aseanbriefing-hosted India-Ireland DTAA PDF
+# https://www.aseanbriefing.com/userfiles/resources-pdfs/India/DTA/Asia_DTA_Ireland_India.pdf
+# (notified Notification No. 45/2002 [F. No. 503/6/99-FTD] dated
+# 2002-02-20; Irish counterpart S.I. No. 521/2001). The PDF was
+# fetched on 2026-06-06 (786KB; PDF 1.3; 8 pages) and pdftotext
+# -layout extracted cleanly. Article 10 verbatim text at lines
+# 324-353 of the extracted layout (Article 11 begins at line 354);
+# Article 23 at lines 629-682 (Article 24 begins at line 683).
+# The 10% rate is a SINGLE-RATE cap (no substantial-holder split
+# unlike India-US 15%/25% or India-Singapore 10%/15%) so the
+# vendored value is the literal Article 10(2) rate applying to
+# every beneficial owner type. Ireland is the dominant UCITS-ETF
+# domicile (VWRA / IUSA / EIMI / IWDA etc.); under Ireland's
+# Investment Undertaking Tax regime + non-resident exemption
+# distributions from Irish UCITS funds to non-Irish-resident
+# investors are typically not subject to Irish dividend WHT so the
+# typical IBKR-individual FTC computation yields zero foreign tax
+# to credit; the entry remains vendored for completeness and the
+# rare case where Irish-source dividend is nonetheless withheld.
+#
+# CA (Article 10(2)(b) 25%; Article 23(3)(a) relief): verbatim
+# verified against the taxsutra-hosted India-Canada DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/CANADA%20DTAA.pdf
+# (notified S.O. 28(E) dated 1998-01-15 effective from 1997-05-06;
+# the PDF's line 16 reads verbatim "Notification : No. SO 28(E),
+# dated 15-1-1998"). The PDF was fetched on 2026-06-06 (155KB;
+# PDF 1.4; 23 pages) and pdftotext -layout extracted cleanly.
+# Article 10 verbatim text at lines 312-344 of the extracted layout
+# (Article 11 begins at line 345); Article 23 at lines 593-657
+# (Article 24 begins at line 659). The 25% rate is the cap for
+# "all other cases" (Article 10(2)(b)); 15% (Article 10(2)(a))
+# applies ONLY to corporate beneficial owners controlling directly
+# or indirectly at least 10% of the voting power in the Canadian
+# distributor — structurally identical to the India-US DTAA
+# Article 10 split. Note India-Canada's Article 23 is split into
+# separate paragraphs for Canadian-resident relief (paragraph 2)
+# and Indian-resident relief (paragraph 3) — the latter is the
+# operative paragraph for Indian residents claiming credit on
+# Canadian-source income; its sub-paragraph (a) is the dividend /
+# income credit clause (vs (b) which is the capital credit clause).
+# This differs from India-US Article 25 which puts the Indian-
+# resident clause in 25(2) and India-Singapore Article 25 which
+# has a single shared Indian-resident clause.
+#
+# DE (Article 10(2) 10%; Article 23(2) relief): verbatim verified
+# against the dsa-library-hosted India-Germany DTAA PDF
+# https://s3-ap-northeast-1.amazonaws.com/dsa-library/Resources/3685/Asia_DTA_Germany_India.pdf
+# (notified S.O. 836(E) dated 1996-11-29; the PDF's line 29 reads
+# verbatim "Notification No. S. O. 836(E), dtd. 29.11.1996"). The
+# PDF was fetched on 2026-06-06 (811KB; PDF 1.3; 8 pages) and
+# pdftotext -layout extracted cleanly. Article 10 verbatim text at
+# lines 317-351 of the extracted layout (Article 11 begins at line
+# 352); Article 23 at lines 622-689 (Article 24 begins at line
+# 690). The 10% rate is a SINGLE-RATE cap (no substantial-holder
+# split — structurally similar to India-Ireland's Article 10(2)
+# flat 10% cap; different from India-US 15%/25% or India-Singapore
+# 10%/15% two-tier structures). The treaty has NO most-favoured-
+# nation (MFN) clause (verified absent from the PDF body via
+# searches for "most-favoured" / "most-favored" / "MFN" / "third
+# State" — none match), so Germany is unaffected by the 2023
+# Indian Supreme Court Nestlé-case MFN ruling that addressed
+# Netherlands / France / Switzerland. Germany's Article 23(2) is
+# the Indian-resident clause; it is a single paragraph (no sub-
+# paragraphs unlike India-US Article 25(2)(a) or India-Canada
+# Article 23(3)(a)). Germany levies non-resident WHT on dividends
+# at 25% domestic law + 5.5% solidarity surcharge; the DTAA cap
+# of 10% reduces this for Indian portfolio individuals via the
+# German tax-relief application process.
+#
+# JP (Article 10(2) 15%; Article 23(2)(a) relief): verbatim
+# verified against the aseanbriefing-hosted India-Japan DTAA PDF
+# https://www.aseanbriefing.com/userfiles/resources-pdfs/India/DTA/Asia_DTA_Japan_India.pdf
+# (notified G.S.R. 101(E) dated 1990-03-01; the PDF's line 29
+# reads verbatim "Notification No. G. S. R. 101(E), dtd. 1st
+# March, 1990"). The PDF was fetched on 2026-06-06 (754KB; PDF
+# 1.3; 8 pages) and pdftotext -layout extracted cleanly. Article
+# 10 verbatim text at lines 283-314 (Article 11 begins at line
+# 315); Article 23 at lines 563-602 (Article 24 begins at line
+# 603). The 15% rate is a SINGLE-RATE cap (Article 10(2) — no
+# substantial-holder split) — higher than the more modern
+# India-Germany / India-Ireland 10% single-rate treaties because
+# this is one of India's older treaties (1989 / notified 1990)
+# before the international trend toward lower dividend rates.
+# The treaty has NO MFN clause (verified absent from the PDF
+# body; also Japan is NOT on the CBDT Circular 3/2022 list of 6
+# MFN-clause treaties: Netherlands / France / Switzerland /
+# Sweden / Spain / Hungary). Article 23 in India-Japan is split
+# into separate paragraphs for India-resident relief (paragraph 2
+# sub-paragraphs (a)/(b)) and Japan-resident relief (paragraph 3
+# sub-paragraphs (a)/(b)/(c)); the Indian-resident credit clause
+# is 23(2)(a). Japan levies non-resident WHT on dividends at
+# 15.315% (15% domestic + 2.1% special reconstruction surcharge)
+# under domestic law; the DTAA cap of 15% slightly lowers this
+# for Indian portfolio individuals.
+#
+# IMPORTANT METHODOLOGY NOTE: web-search summaries for India-Japan
+# DTAA returned THREE incorrect values during initial research:
+#   * claimed rate 10% (actual 15%);
+#   * claimed notification S.O. 789(E) (actual G.S.R. 101(E));
+#   * claimed date 1990-08-10 (actual 1990-03-01).
+# All three were corrected via direct PDF verification.
+# Reinforces the established convention: ALWAYS verify against
+# the primary PDF — never trust web-search treaty summaries for
+# rates / article numbers / notification IDs.
+#
+# NL (Article 10(2) 10%; Article 23(4) relief): verbatim verified
+# against the taxsutra-hosted India-Netherlands DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/NETHERLANDS.pdf
+# (notified G.S.R. 382(E) dated 1989-03-27 amended by S.O. 693(E)
+# dated 1999-08-30 and Notification 2/2013 dated 2013-01-14; the
+# PDF's lines 14-15 read verbatim "Notification : No. GSR 382(E),
+# dated 27-3-1989 as amended by Notification No. SO 693(E) dated
+# 30-8-1999 and Notification No. 2/2013 dated 14-1-2013"). The
+# PDF was fetched on 2026-06-06 (162KB; PDF 1.5; 20 pages) and
+# pdftotext -layout extracted cleanly. Article 10 verbatim text
+# at lines 300-330 (Article 11 begins at line 331); Article 23
+# at lines 607-661 (Article 24 begins at line 663). The 10% rate
+# is the post-1999-protocol single-rate cap — the original 1989
+# treaty had a 10%/15% sub-paragraph split which the 1999
+# Protocol (S.O. 693(E)) REPLACED with a single 10% rate; the
+# PDF marks the substitution with footnote brackets around the
+# current Article 10(2) text.
+#
+# NL is the FIRST MFN-list country vendored. Per CBDT Circular
+# 3/2022 India has MFN clauses with 6 treaty partners only:
+# Netherlands / France / Switzerland / Sweden / Spain / Hungary.
+# The Protocol Section IV paragraph 2 (lines 850-856 of the extract) carries
+# the famous MFN clause that triggered the 2023 Indian Supreme
+# Court Nestlé-case ruling. Indian taxpayers historically argued
+# the MFN clause triggers a 5% rate via post-OECD-membership
+# treaties with Slovenia / Lithuania / Colombia; the Supreme
+# Court resolved this in favour of the literal 10% rate:
+#   (i) MFN auto-application requires the third State to have
+#       been an OECD member at the time of its India treaty
+#       signature (not retrospectively after joining OECD later);
+#   (ii) Even when (i) is met, MFN application requires explicit
+#       CBDT notification (India has not issued such a
+#       notification for Netherlands).
+# Vendoring the literal 10% rate per the Supreme Court position.
+# The applicability_notes document the MFN context so a future
+# auditor reading the row can understand the Nestlé context
+# without re-tracing the litigation history.
+#
+# Article 23 in India-Netherlands has paragraphs 1-3 covering
+# Netherlands-resident relief and paragraph 4 covering Indian-
+# resident relief — so the Schedule FSI relief citation
+# is "Article 23(4)" (not 23(2)(a) like India-Japan or 23(3)(a)
+# like India-Canada).
+#
+# IL (Article 10(2) 10%; Article 24(2)(a) relief; tax-sparing
+# 24(3)): verbatim verified against the aseanbriefing-hosted
+# India-Israel DTAA PDF
+# https://www.aseanbriefing.com/userfiles/resources-pdfs/India/DTA/Asia_DTA_Israel_India.pdf
+# (notified G.S.R. 256(E) dated 1996-06-26 effective from
+# 1996-05-15; the PDF's line 29 reads verbatim "Notification No.
+# G. S. R. 256(E), dtd.26.06.1996"). The PDF was fetched on
+# 2026-06-06 (800KB; PDF 1.3; 8 pages) and pdftotext -layout
+# extracted cleanly. Article 10 verbatim text at lines 325-356
+# (Article 11 begins at line 357); Article 24 (Elimination of
+# Double Taxation) at lines 674-708 (Article 25 begins at line
+# 709). The 10% rate is a SINGLE-RATE cap (Article 10(2) — no
+# substantial-holder split) — similar in structure to
+# India-Germany / India-Ireland flat 10% caps and different from
+# the India-US (15%/25%) or India-Singapore (10%/15%) two-tier
+# structures.
+#
+# The treaty has NO MFN clause (verified absent from the PDF
+# body via search for "most-favoured" / "MFN" / "third State" /
+# "OECD" — none match; also Israel is NOT on the CBDT Circular
+# 3/2022 list of 6 MFN-clause treaties: Netherlands / France /
+# Switzerland / Sweden / Spain / Hungary) so Israel is
+# unaffected by the 2023 Indian Supreme Court Nestlé-case
+# ruling.
+#
+# Article 24 in India-Israel is structured with paragraph 1
+# covering Israel-resident relief and paragraph 2 covering
+# Indian-resident relief; paragraph 2(a) is the Indian-resident
+# credit clause for income tax and paragraph 2(b) for capital
+# tax (out of Form 67 scope). The Schedule FSI relief citation is
+# therefore "Article 24(2)(a)" — not 23(2)(a) like
+# India-Japan (which numbers its elimination article as 23 not
+# 24) or 23(3)(a) like India-Canada.
+#
+# NOTABLE TAX-SPARING PROVISION (Article 24(3)): the India-
+# Israel treaty contains an override clause "Notwithstanding the
+# provisions of paragraphs 1 and 2" that grants a deemed 15%
+# credit on dividends regardless of the actual foreign tax paid.
+# Verbatim: "where a resident of a Contracting State derives
+# income by way of dividends on shares of companies resident in
+# the other Contracting State, the first-mentioned Contracting
+# State shall allow credit of 15 per cent. of the gross amount
+# of such dividend from the tax payable" (PDF lines 695-699).
+# This is symmetric tax-sparing: an Indian resident receiving
+# Israeli dividends may claim 15% deemed credit even when Israel
+# only withholds the 10% Article 10(2) cap.
+#
+# Vendoring decision: the relief_article column carries the
+# standard Article 24(2)(a) (not 24(3)) because the tool never
+# claims a credit above the foreign tax actually withheld: the §90
+# credit at src/ibkr_fa/compute/form67.py is min(column 7,
+# eligible foreign tax), and eligible foreign tax is at most the
+# Rule-128-converted withholding. The tool has no input for a
+# deemed (tax-sparing) credit: a [[form67.tax_payable_overrides]]
+# entry supplies column 7 only and cannot raise the credit above
+# eligible foreign tax. Claiming the 24(3) tax-sparing benefit
+# above the actual foreign WHT is manual work outside the tool;
+# the row's applicability_notes document the 24(3) override so a
+# future auditor reading the vendored row can apply for the tax-
+# sparing benefit independently.
+#
+# Israel domestic non-resident WHT on dividends is typically 25%
+# under the Israeli Income Tax Ordinance; the DTAA cap of 10%
+# reduces this for Indian portfolio individuals via the Israeli
+# tax-relief application process at source upon presentation of
+# an Indian tax-residency certificate (Form 10F).
+#
+# AE (Article 10(2) 10%; Article 25(2) relief): verbatim verified
+# against the taxsutra-hosted India-UAE DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/UAE%20DTAA.pdf
+# (notified G.S.R. 710(E) dated 1993-11-18 as amended by S.O.
+# 2001(E) dated 2007-11-28; the PDF's line 16 reads verbatim
+# "Notification : No. GSR 710(E), dated 18-11-1993, as amended by
+# Notification No. SO 2001(E), dated 28-11-2007"). The PDF was
+# fetched on 2026-06-06 (113KB; PDF 1.4; 13 pages) and pdftotext
+# -layout extracted cleanly. Article 10 verbatim text at lines
+# 232-253 (Article 11 begins at line 254); Article 25 at lines
+# 503-531 (Article 26 begins at line 532). The 10% rate is a
+# SINGLE-RATE cap (Article 10(2) — no substantial-holder split)
+# — similar in structure to India-Germany / India-Ireland /
+# India-Israel flat 10% caps.
+#
+# The literal Article 10(2) text is uncharacteristically terse —
+# verbatim it reads "the tax so charged shall not exceed 10 per
+# cent." (with period; the "of the gross amount of the
+# dividends" base is implicit). Compare Article 12(2) of the same
+# treaty which does spell out "10 per cent of the gross amount of
+# such royalties". This brevity is unique to the India-UAE
+# treaty and does NOT indicate ambiguity — practitioners and the
+# CBDT both treat the rate as 10% of gross dividends.
+#
+# The treaty has NO MFN clause (verified absent from the PDF
+# body via search for "most-favoured" / "MFN" / "third State" /
+# "OECD" — none match; also UAE is NOT on the CBDT Circular
+# 3/2022 list of 6 MFN-clause treaties: Netherlands / France /
+# Switzerland / Sweden / Spain / Hungary) so UAE is unaffected
+# by the 2023 Indian Supreme Court Nestlé-case ruling.
+#
+# Article 25 is structured with paragraph 1 = general savings
+# clause; paragraph 2 = Indian-resident credit clause (income
+# tax + capital tax + special surtax sub-clause for corporate
+# residents); paragraph 3 = UAE-resident credit clause;
+# paragraph 4 = UNILATERAL tax-sparing provision explicitly
+# scoped "For the purpose of paragraph (3)" — deeming Indian
+# income-tax-incentive exemptions as if paid for paragraph 3
+# purposes (applies ONLY to UAE-residents receiving Indian
+# income; NOT to Indian residents receiving UAE income;
+# therefore NOT relevant to this Indian-resident dataset). The
+# Schedule FSI relief citation is therefore "Article 25(2)" —
+# paragraph 2 covers all dividend
+# credit cases without sub-paragraph split (different from
+# India-Israel Article 24(2)(a) which DOES split income tax /
+# capital tax across sub-paragraphs).
+#
+# UAE is a 0%-individual-income-tax jurisdiction; UAE corporate
+# tax introduced in 2023 (9% on taxable corporate profits above
+# AED 375k) does not withhold on dividends paid to non-residents.
+# Practical FTC for Indian-resident IBKR investors in UAE-listed
+# shares (DFM / ADX) typically yields zero foreign tax to credit;
+# the entry is vendored for tri-state lookup completeness and
+# to handle the rare case where UAE-source income is processed
+# through Form 67.
+#
+# The 2007 amendment notification S.O. 2001(E) introduced
+# tie-breaker residency rules in Article 4 plus a revised
+# Article 28 (Exchange of Information) and added Article 29
+# (Limitation of Benefits); it did NOT amend Article 10 rates.
+# The current consolidated treaty text (as extracted from the
+# taxsutra PDF) carries the post-amendment article numbering
+# and content. Per the established convention (S.O. vs G.S.R.
+# notification series distinction) the original notification is
+# G.S.R. 710(E) and the 2007 amendment is S.O. 2001(E) — both
+# series are correctly cited verbatim in the source_citation.
+#
+# FR (Article 11(2) 10%; Article 25(1)(a) relief; MFN-list
+# country #2): verbatim verified against the taxsutra-hosted
+# India-France DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/FRANCE%20DTAA.pdf
+# (notified Notification No. 9602 [F. No. 501/16/80-FTD] dated
+# 1994-09-06 as amended by S.O. 650(E) dated 2000-07-10; the
+# PDF's line 13 reads verbatim "Notification No. 9602 [F. No.
+# 501/16/80-FTD], dated 6-9-1994, as amended by Notification No.
+# SO 650(E), dated 10-7-2000"). The PDF was fetched on 2026-06-06
+# (138KB; PDF 1.4; 16 pages) and pdftotext -layout extracted
+# cleanly. Article 11 verbatim text at lines 240-281 (Article 12
+# begins at line 282); Article 25 at lines 517-583 (Article 26
+# begins at line 584); Protocol Section 7 (MFN clause) at lines
+# 736-744.
+#
+# NOTABLE ARTICLE NUMBERING: in this treaty Dividends is
+# Article 11 (NOT Article 10 as in most Indian DTAAs); Article
+# 10 is Associated Enterprises. The withholding_article field
+# is therefore "Article 11(2)" — different from US/IE/SG/CA/
+# DE/JP/NL/IL/AE which all use Article 10(2) or 10(2)(b). The
+# relief_article is "Article 25(1)(a)" — Article 25 has
+# paragraph 1 = Indian-resident relief sub-paragraphs (a)(b);
+# paragraph 2 = French-resident relief sub-paragraphs (a)-(f).
+# Paragraph 1(a) is the Indian-resident credit clause for
+# income (paragraph 1 also covers capital tax out of scope).
+#
+# FR is the second MFN-list country vendored (after NL). Per
+# CBDT Circular 3/2022 India has MFN clauses with 6 treaty
+# partners: Netherlands / France / Switzerland / Sweden / Spain
+# / Hungary. The Protocol Section 7 of this treaty carries the
+# MFN clause verbatim: "In respect of articles 11 (Dividends);
+# 12 (Interest) and 13 ... if under any Convention; Agreement
+# or Protocol signed after 1-9-1989; between India and a third
+# State which is a member of the OECD; India limits its taxation
+# at source on dividends ... to a rate lower or a scope more
+# restricted than the rate or scope provided for in this
+# Convention ... the same rate or scope ... shall also apply
+# under this Convention".
+#
+# Indian taxpayers historically argued the MFN clause triggers
+# a 5% rate via later India-Slovenia / India-Lithuania /
+# India-Colombia treaties (after those third States joined the
+# OECD). The 2023 Indian Supreme Court Nestlé-case ruling
+# (Civil Appeal 1420/2023) resolved this in favour of the
+# literal 10% rate per Article 11(2):
+#   (i) MFN auto-application requires the third State to have
+#       been an OECD member at the time of its India treaty
+#       signature (not retrospectively after joining OECD later);
+#   (ii) Even when (i) is met, MFN application requires explicit
+#       CBDT notification (India has not issued such a
+#       notification for France).
+# Vendoring the literal 10% rate per the Supreme Court position.
+# The applicability_notes document the MFN context so a future
+# auditor reading the row can understand the Nestlé context
+# without re-tracing the litigation history.
+#
+# Article 11(3)-(4) contain historic French "avoir fiscal"
+# tax-credit-imputation provisions and prepayment (precompte)
+# refund provisions — these are now largely defunct since the
+# French 2004 tax reform abolished the avoir fiscal system; for
+# vendoring purposes only the Article 11(2) rate matters.
+#
+# France is the second-largest European holding-company /
+# equities jurisdiction (LVMH / TotalEnergies / Sanofi /
+# L'Oréal / BNP Paribas / Air Liquide / EssilorLuxottica /
+# Schneider Electric etc.); high IBKR exposure for Indian
+# investors seeking European equity diversification.
+#
+# SE (Article 10(2) 10%; Article 24(2)(a) relief; MFN-list
+# country #3): verbatim verified against the taxsutra-hosted
+# India-Sweden DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/SWEDEN%20DTAA.pdf
+# (notified G.S.R. 705(E) dated 1997-12-17; the PDF's line 14
+# reads verbatim "Notification : No. GSR 705(E), dated
+# 17-12-1997"). The PDF was fetched on 2026-06-06 (126KB; PDF
+# 1.4; 14 pages) and pdftotext -layout extracted cleanly.
+# Article 10 verbatim text at lines 246-269 (Article 11 begins
+# at line 271); Article 24 at lines 501-549 (Article 25 begins
+# at line 550); MFN clause in Protocol "With reference to
+# Articles 10, 11 and 12" at lines 702-708.
+#
+# Standard treaty structure: Article 10 = Dividends with a flat
+# 10% Article 10(2) cap (no substantial-holder split); Article
+# 24 = Elimination of Double Taxation with paragraph 1 = general
+# savings clause; paragraph 2 = Indian-resident relief
+# sub-paragraphs (a)(b)(c) where (a) is the income-tax credit
+# clause (b) covers exempt-income rate-progression and (c)
+# covers capital tax (out of Form 67 scope); paragraph 3 =
+# Swedish-resident relief sub-paragraphs (a)-(f) including
+# tax-sparing provisions in (d)-(e) (NOT relevant to Form 67
+# vendoring — applies only to Swedish residents receiving
+# Indian income).
+#
+# Sweden IS the THIRD MFN-list country vendored (after NL #241
+# and FR #244). Per CBDT Circular 3/2022 India has MFN clauses
+# with 6 treaty partners: Netherlands / France / Switzerland /
+# Sweden / Spain / Hungary. The Protocol carries the MFN clause
+# verbatim:
+#
+#   "In respect of Articles 10 (Dividends), 11 (Interest) and 12
+#   (Royalties and fees for technical services) if under any
+#   Convention. Agreement or Protocol between India and a third
+#   State which is a member of the OECD, India limits its
+#   taxation at source on dividends, interest, royalties, or
+#   fees for technical services to a rate lower or a scope more
+#   restricted than the rate or scope provided for in this
+#   Convention on the said items of income, the same rate or
+#   scope as provided for in that Convention, Agreement or
+#   Protocol on the said items of income shall also apply under
+#   this Convention".
+#
+# UNIQUE FEATURE: unlike India-France (Protocol Section 7 with
+# explicit "1-9-1989" cutoff date) and India-Netherlands
+# (Protocol Section IV.2 with "after the signature of this
+# convention" cutoff phrase), the India-Sweden MFN clause has
+# NO explicit date cutoff. It applies to "any Convention,
+# Agreement or Protocol between India and a third State which
+# is a member of the OECD" without temporal bound.
+#
+# The same 2023 Indian Supreme Court Nestlé-case ruling
+# framework applies (Civil Appeal 1420/2023):
+#   (i) MFN auto-application requires the third State to have
+#       been an OECD member at the time of its India treaty
+#       signature (not retrospectively after joining OECD later);
+#   (ii) Even when (i) is met, MFN application requires explicit
+#       CBDT notification (India has not issued such a
+#       notification for Sweden).
+# Vendoring the literal 10% rate per the Supreme Court position.
+#
+# Sweden has Volvo / Ericsson / Atlas Copco / H&M / SEB /
+# Investor AB / Sandvik / Hexagon as the major IBKR-accessible
+# equities; significant Nordic-equity exposure for Indian
+# investors.
+#
+# ES (Article 11(2) 15%; Article 25(2)(a) relief; MFN-list
+# country #4 — but MFN clause covers ONLY royalties/FTS not
+# dividends): verbatim verified against the taxsutra-hosted
+# India-Spain DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/SPAIN%20DTAA.pdf
+# (notified G.S.R. 356(E) dated 1995-04-21; the PDF's line 12
+# reads verbatim "Notification : No. GSR 356(E), dated
+# 21-4-1995"). The PDF was fetched on 2026-06-06 (119KB; PDF
+# 1.4; 14 pages) and pdftotext -layout extracted cleanly.
+# Article 11 verbatim text at lines 230-253 (Article 12 begins
+# at line 254); Article 25 at lines 464-517 (Article 26 begins
+# at line 518); MFN clause (royalties/FTS only — NOT dividends)
+# in Protocol Section 7 at lines 643-651.
+#
+# UNUSUAL ARTICLE NUMBERING (like India-France): in this treaty
+# Dividends is Article 11 (NOT Article 10 as in most Indian
+# DTAAs); Article 10 is Associated Enterprises. The
+# withholding_article field is therefore "Article 11(2)" — same
+# pattern as India-France. Among 12 vendored countries the
+# Article-11-for-dividends pattern applies to FR (10%) and ES
+# (15%).
+#
+# RATE 15% — Spain has a HIGHER dividend rate than the modern
+# 10% caps. The treaty was signed 1993-02-08 and notified
+# 1995-04-21; it predates the international trend toward lower
+# dividend WHT rates. Other 15%-rate vendored countries are
+# India-Japan (also 1989-era treaty) and India-Singapore (the
+# (2)(b) sub-paragraph rate for portfolio holders). The 10%
+# rate applies to India-Germany / India-Ireland / India-Israel
+# / India-Netherlands / India-Sweden / India-UAE / India-France
+# (post-amendments where applicable).
+#
+# Article 25 has paragraph 1 = general savings clause;
+# paragraph 2 = Indian-resident relief sub-paragraph (a) which
+# is the income-tax credit clause with (i) and (ii)
+# sub-sub-paragraphs splitting income tax / capital tax
+# (capital tax (ii) is out of Form 67 scope) and (b) covers
+# exempt-income rate-progression; paragraph 3 = Spanish-
+# resident relief sub-paragraphs (a)(b)(c); paragraphs 4-5 =
+# tax-sparing for Spanish residents (NOT relevant — applies
+# only to Spanish residents receiving Indian income). The Schedule
+# FSI relief citation is "Article 25(2)(a)" — structurally similar to
+# India-US / India-Sweden / India-Japan / India-Israel which
+# all use Article 24/25 paragraph 2(a).
+#
+# Spain IS the FOURTH MFN-list country vendored (after NL #241
+# / FR #244 / SE #245). Per CBDT Circular 3/2022 India has MFN
+# clauses with 6 treaty partners: Netherlands / France /
+# Switzerland / Sweden / Spain / Hungary.
+#
+# CRITICAL NUANCE — the India-Spain MFN clause (Protocol
+# Section 7) covers ONLY royalties and fees for technical
+# services; it does NOT extend to dividends. Verbatim:
+#
+#   "However, if under any Convention or Agreement between
+#   India and a third State which is a Member of the OECD,
+#   which enters into force after 1-1-1990, India limits its
+#   taxation at source on royalties or fees for technical
+#   services to a rate lower or a scope more restricted than
+#   the rate or scope provided for in this Convention on the
+#   said items of incomes, the same rate or scope as provided
+#   for in that Convention or Agreement on the said items of
+#   income shall also apply under this Convention with effect
+#   from the date on which the present Convention comes into
+#   force or the relevant Indian Convention or Agreement,
+#   whichever enters into force later."
+#
+# The MFN clause specifically enumerates only "royalties or
+# fees for technical services" — dividends are NOT included.
+# Therefore the 2023 Indian Supreme Court Nestlé-case ruling
+# (which addressed dividend MFN auto-application via NL/FR
+# treaties) does NOT affect the India-Spain dividend rate
+# vendoring. The literal 15% dividend rate per Article 11(2)
+# stands without MFN considerations.
+#
+# This is the FIRST vendored MFN-list country where the MFN
+# clause does NOT cover dividends. Spain is on the
+# CBDT-Circular-3/2022 list because it HAS an MFN clause (for
+# royalties); but the MFN-Nestlé framework that protected the
+# literal NL/FR/SE 10% dividend rates is INAPPLICABLE here
+# because Spain's MFN clause never reached dividends in the
+# first place. The vendored 15% rate is simply the literal
+# Article 11(2) rate; no Nestlé citation is needed.
+#
+# Spain has Inditex (Zara) / Iberdrola / Banco Santander /
+# Telefónica / BBVA / Repsol / Amadeus / Aena as major
+# IBKR-accessible equities; significant European-equity
+# exposure for Indian investors.
+#
+# Protocol Section 6 carves out Spanish tax-exempt corporations
+# from Article 11(2) for Spain-resident dividend payments
+# (Spanish-investor-receiving-Spanish-source case; NOT relevant
+# for Indian-resident-receiving-Spanish-source case which is
+# the Form 67 scenario).
+#
+# HU (Article 10(2) 10%; Article 23(2) relief; MFN-list country
+# #5 — MFN covers dividends and has NO date cutoff like
+# Sweden): verbatim verified against the taxsutra-hosted
+# India-Hungary DTAA PDF
+# https://www.taxsutra.com/sites/taxsutra.com/files/dtaa/HUNGARY%20DTAA.pdf
+# (notified G.S.R. 197(E) dated 2005-03-31; the PDF's line 14
+# reads verbatim "Notification : No. GSR 197(E), dated
+# 31-3-2005"). The PDF was fetched on 2026-06-06 (111KB; PDF
+# 1.4; 14 pages) and pdftotext -layout extracted cleanly.
+# Article 10 verbatim text at lines 220-243 (Article 11 begins
+# at line 244); Article 23 at lines 446-464 (Article 24 begins
+# at line 465); MFN clause in Protocol "With reference to
+# Articles 10, 11 and 12" at lines 583-590.
+#
+# Standard treaty structure: Article 10 = Dividends with a flat
+# 10% Article 10(2) cap (no substantial-holder split); Article
+# 23 = Elimination of Double Taxation with paragraph 1 =
+# Hungary-resident relief with sub-paragraphs (a)(b); paragraph
+# 2 = Indian-resident relief (single block — no sub-paragraph
+# split unlike India-Israel 24(2)(a) or India-US 25(2)(a));
+# paragraph 3 = exempt-income rate-progression applies
+# symmetrically. The Schedule FSI relief citation is "Article 23(2)" —
+# structurally similar to India-Germany Article 23(2) and
+# India-Ireland Article 23(2) which also use a single-paragraph
+# Indian-resident credit clause.
+#
+# Hungary IS the FIFTH MFN-list country vendored (after NL
+# #241 / FR #244 / SE #245 / ES #246). Per CBDT Circular
+# 3/2022 India has MFN clauses with 6 treaty partners:
+# Netherlands / France / Switzerland / Sweden / Spain / Hungary.
+# Only Switzerland remains pending of the MFN-list set.
+#
+# The Protocol "With reference to Articles 10, 11 and 12"
+# carries the MFN clause verbatim:
+#
+#   "In respect of Articles 10 (Dividends), 11 (Interest) and
+#   12 (Royalties and fees for technical services), if under
+#   any Convention, Agreement or Protocol between India and a
+#   third State which is a member of the OECD, India limits
+#   its taxation at source on dividends, interest, royalties
+#   or fees for technical services to a rate lower or a scope
+#   more restricted than the rate or scope provided for in
+#   this Convention on the said items of income, the same rate
+#   or scope as provided for in that Convention. Agreement or
+#   Protocol on the said items of income shall also apply
+#   under this Convention".
+#
+# Unlike Spain (whose MFN clause excludes dividends and covers
+# only royalties/FTS), Hungary's MFN clause EXPLICITLY
+# enumerates dividends — the dividend-MFN-Nestlé framework
+# applies symmetrically.
+#
+# UNIQUE FEATURE: like India-Sweden the India-Hungary MFN
+# clause has NO explicit date cutoff (unlike India-France
+# "1-9-1989" and India-Netherlands "after the signature of
+# this convention"). It applies to "any Convention, Agreement
+# or Protocol between India and a third State which is a
+# member of the OECD" without temporal bound.
+#
+# The same 2023 Indian Supreme Court Nestlé-case ruling
+# framework (Civil Appeal 1420/2023) applies:
+#   (i) MFN auto-application requires the third State to have
+#       been an OECD member at the time of its India treaty
+#       signature (not retrospectively after joining OECD later);
+#   (ii) Even when (i) is met, MFN application requires
+#       explicit CBDT notification (India has not issued such
+#       a notification for Hungary).
+# Vendoring the literal 10% rate per the Supreme Court
+# position.
+#
+# ALSO NOTABLE: the Protocol "With reference to Article 10"
+# contains an India-specific distributed-profits-tax (DDT)
+# provision verbatim:
+#
+#   "When the company paying the dividends is a resident of
+#   India the tax on distributed profits shall be deemed to be
+#   taxed in the hands of the shareholders and it shall not
+#   exceed 10 per cent of the gross amount of dividend".
+#
+# This DDT pass-through cap applies to Hungarian-resident
+# shareholders receiving Indian-source dividends (Indian DDT
+# is deemed paid by the Hungarian shareholder; thereby
+# eligible for relief under Article 23 paragraph 1 in Hungary).
+# It is NOT relevant to Indian-resident receiving
+# Hungarian-source dividends (the Form 67 scenario).
+#
+# Hungary has OTP Bank / Richter Gedeon / MOL Group / Magyar
+# Telekom / Wizz Air / 4iG as major IBKR-accessible equities.
+#
+# VG (no_dtaa): checked on 2026-11-11 against CBDT's DTAA list,
+# fetched as for KY / BM above. The British Virgin Islands has no
+# comprehensive or limited agreement there, active or superseded.
+# It is listed only under Tax Information Exchange Agreement (TIEA):
+# signed 2011-02-09 and notified under section 90 by Notification
+# No. 54/2011 [F. No. 503/10/2009-FTD-I], S.O. 2301(E), dated
+# 2011-10-03,
+# https://www.incometaxindia.gov.in/w/british-virgin-islands-tax-information-exchange-agreement-tiea-1
+# Vendored because BVI-incorporated issuers list on US
+# exchanges, so a VG ISIN prefix can reach a US-broker
+# statement, and the tri-state lookup must distinguish BVI
+# from unvendored countries. Structurally identical to the
+# existing no_dtaa entries for Bermuda (BM) and Cayman
+# Islands (KY). BVI levies no income tax on
+# dividends so the §91 doubly-taxed-income precondition is
+# typically not met. In practice BVI-incorporated entities
+# trade as US ADRs / NYSE / NASDAQ listings and the dividend
+# WHT for such instruments is the US WHT (paid by the
+# US-listed entity), not a BVI WHT.
+#
+# DTAA-coverage scope note (per user directive 2026-06-06):
+# vendoring is bounded by countries that users' statements
+# actually need, not by theoretical IBKR exposure breadth.
+# Remaining DTAA partners (CH / AU / KR / MU / GB / CN / TH /
+# ZA / etc.) are tracked in a follow-up GitHub issue rather
+# than speculatively vendored here.
+#
+# ---------------------------------------------------------------------
+# Country coverage expansion process
+#
+# To add a new country row, the contributor MUST verify the article
+# numbers + rate against the official DTAA text (CBDT's DTAA list
+# at https://incometaxindia.gov.in/Pages/international-taxation/dtaa.aspx
+# links to the original notification PDFs). The source_citation
+# field MUST cite the specific notification or treaty-text URL; do
+# NOT cite secondary commentary as the primary source.
+#
+# Common IBKR-popular countries pending coverage (filed as follow-
+# ups; reviewers may request these in-PR if the verification scope
+# is bounded):
+#
+#   * GB / United Kingdom (Article 11 Dividends per India-UK DTAA;
+#     rates per the 2013 protocol)
+#   * SG / Singapore (Article 10 Dividends per India-Singapore
+#     DTAA; 2016 protocol amended capital-gains regime, dividend
+#     rates carry forward from the original treaty)
+#   * CA / Canada (Article 10 Dividends per India-Canada DTAA)
+#   * AU / Australia (Article 10 Dividends per India-Australia DTAA)
+#   * CH / Switzerland (Article 10 Dividends per India-Switzerland
+#     DTAA; 2010 protocol amended other articles, dividend rate
+#     unchanged)
+#   * DE / Germany, JP / Japan, NL / Netherlands,
+#     IE / Ireland
+#
+# Adding any of these requires checking the original treaty PDF for
+# subclause numbering (it varies between treaties — UK uses
+# Article 11 for Dividends, not Article 10) and any dual-rate
+# carve-outs.

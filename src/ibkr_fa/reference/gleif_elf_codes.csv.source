@@ -1,0 +1,12 @@
+source_url=https://api.gleif.org/api/v1/entity-legal-forms
+retrieval=pagination page[size]=200, pages 1-18
+fetched_at=2026-08-23T16:16:16.899141+00:00
+upstream_page_bytes_sha256=c45fd536a595151db6a0418595430c6ac8109bacf0908badaf2dcfc617caaa60
+rows=3599
+csv_sha256=5360731c38c6b3038f2a296f2a514cb11a1c1add03a3b9c44a0607174a193f62
+selection=unique localName where languageCode=en; blank otherwise
+terms=https://www.gleif.org/en/meta/lei-data-terms-of-use/
+# The loader (src/ibkr_fa/reference/gleif_elf.py) checks csv_sha256 before
+# it parses the CSV, and rows after. A re-vendor must update _CSV_SHA256 and
+# _PINNED_ROW_COUNT there too; tests/test_reference_gleif_elf.py fails until
+# they match the values above.

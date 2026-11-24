@@ -1,0 +1,2 @@
+warning: the CMA account opening date uses the first supplied statement date because that statement proves no carried account or SPAXX balance; verify the bundle starts at legal account opening.
+warning: manual entry required for A3 Peak value of investment during the Period in row(s) 2: the peak is blank because the peak falls on the disposal day, and the Schedule FA text doesn't settle whether that day counts. Enter it by hand; a ticker override or a re-fetch won't help.

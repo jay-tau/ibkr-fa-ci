@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env
+
+# uv
+.uv/
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+
+# Type checkers
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.ty_cache/
+
+# Caches
+.cache/
+
+# IDE
+.idea/
+.vscode/
+.history/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# User data — never commit personal IBKR statements / generated tax CSVs
+data/
+**/.ibkr-fa-price-cache/
+**/massive-options/
+**/robinhood-identities/
+**/manual-locked-equities/
+*.csv
+*.pdf
+*.xlsx
+user.toml
+!tests/fixtures/**/*.csv
+!src/ibkr_fa/reference/*.csv
+.pytest-tmp/
+.scratch/
+.reviewscratch/
+.worktrees/
+# Node.js diagnostic reports (CLI out-of-memory dumps)
+report.[0-9]*.json

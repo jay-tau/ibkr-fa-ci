@@ -1,0 +1,25 @@
+Statement,Header,Field Name,Field Value,,,,,,,,,,,,,
+Statement,Data,BrokerName,Interactive Brokers LLC,,,,,,,,,,,,,
+Statement,Data,BrokerAddress,"Two Pickwick Plaza, Greenwich, CT 06830",,,,,,,,,,,,,
+Statement,Data,Title,Activity Statement,,,,,,,,,,,,,
+Statement,Data,Period,"January 1, 2025 - December 31, 2025",,,,,,,,,,,,,
+Statement,Data,WhenGenerated,"2026-01-15, 09:00:00 EDT",,,,,,,,,,,,,
+Account Information,Header,Field Name,Field Value,,,,,,,,,,,,,
+Account Information,Data,Name,Sample Holder,,,,,,,,,,,,,
+Account Information,Data,Account,U12345678,,,,,,,,,,,,,
+Account Information,Data,Account Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Customer Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Account Capabilities,Cash,,,,,,,,,,,,,
+Account Information,Data,Base Currency,USD,,,,,,,,,,,,,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,,,,,,
+Financial Instrument Information,Data,Stocks,SOLO,SOLO MID-YEAR CLOSE,11111,US99995M1009,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,DUAL,DUAL FIFO CLOSE,22222,US99995N1081,NASDAQ,1,COMMON,,,,,,,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,SOLO,"2025-02-01, 10:30:00",10,100.00,100.00,-1000.00,0,1000.00,0,0,O
+Trades,Data,Order,Stocks,USD,SOLO,"2025-08-01, 10:30:00",-10,120.00,120.00,1200.00,0,-1000.00,200.00,0,C
+Trades,SubTotal,,Stocks,USD,SOLO,,0,,,200.00,0,0.00,200.00,0,
+Trades,Data,Order,Stocks,USD,DUAL,"2025-03-01, 11:00:00",6,100.00,100.00,-600.00,0,600.00,0,0,O
+Trades,Data,Order,Stocks,USD,DUAL,"2025-04-01, 11:00:00",4,110.00,110.00,-440.00,0,440.00,0,0,O
+Trades,Data,Order,Stocks,USD,DUAL,"2025-09-01, 11:00:00",-10,124.00,124.00,1240.00,0,-1040.00,200.00,0,C
+Trades,SubTotal,,Stocks,USD,DUAL,,0,,,200.00,0,0.00,200.00,0,
+Trades,Total,,Stocks,USD,,,,,,400.00,0,0.00,400.00,0,

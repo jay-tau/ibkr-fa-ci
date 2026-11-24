@@ -1,0 +1,139 @@
+# Provenance for itr_country_codes.csv
+#
+# Source: official ITR-2 Excel utility for AY 2025-26, sheet
+# `DropDownValues`: the union of its three country named ranges
+# `Country`, `Country_NoIndia` and `Country_Juridiction` (see Scope
+# below). Each entry in those ranges has the form
+# "{cbdt_code}-{COUNTRY_NAME_UPPERCASE}"; this CSV splits the two halves
+# into separate columns and adds an ISO 3166-1 alpha-2 lookup key.
+#
+# upstream-utility: ITR2_AY_25-26_V1.0
+# upstream-utility-url: https://www.incometax.gov.in/iec/foportal/sites/default/files/2025-07/ITR2_AY_25-26_V1.0.zip
+# upstream-utility-release-date: 2025-07-11
+# extracted-at: 2026-05-16 (initial 26-country subset)
+# expanded-at: 2026-05-30 (full 249-country union of all three named ranges under #74)
+#
+# ---------------------------------------------------------------------------
+# Scope: this file lists 249 countries — the **union** of the three
+# country named ranges in the source workbook:
+#
+#  * `Country` (sheet DropDownValues, cells BU3:BU251) — 247
+#    countries. Used by Schedule FA Tables A1-G, Schedule TR,
+#    Schedule CG buyer-country dropdowns, Schedule OS country
+#    column, FSI residence-country column, and most other forms.
+#  * `Country_NoIndia` (sheet DropDownValues, cells BW3:BW250) —
+#    used by Schedule FA Table A2 (foreign custodial accounts:
+#    excludes India because by definition an Indian custodial
+#    account isn't on FA). Adds 2 countries that BU misses:
+#    1013-WESTERN SAHARA and 260-ZAMBIA.
+#  * `Country_Juridiction` (sheet DropDownValues, cells BY3:BY251)
+#    — used by Schedule FSI jurisdiction-of-tax-residence column.
+#    Includes the same WESTERN SAHARA + ZAMBIA additions as
+#    Country_NoIndia.
+#
+# The union (249 entries) is taken so any IBKR-issued holding
+# resolves at lookup time. **Caveat**: a row with iso_alpha2 = EH
+# (Western Sahara) or ZM (Zambia) will resolve through the loader,
+# but pasting the resulting "{cbdt_code}-{country_name_portal}"
+# into Schedule FA Table A3 (whose dropdown is the smaller BU
+# range) would be rejected by the portal. This is a CBDT data
+# inconsistency, not an ibkr-fa bug — if a real user hits it the
+# fix is at the CBDT portal end (or the user picks a different
+# residence country with their CA's guidance).
+#
+# The expansion under #74 preserves the previously-vendored 26-country
+# subset byte-for-byte: every existing iso_alpha2 row's cbdt_code,
+# country_name, and country_name_portal are unchanged. Newly-added
+# rows use ISO 3166-1's preferred current friendly-name where it
+# differs from the CBDT portal form (e.g., Eswatini for SZ vs CBDT's
+# legacy "SWAZILAND", North Macedonia for MK vs "MACEDONIA (THE FORMER
+# YUGOSLAV REPUBLIC OF)"). The portal-facing country_name_portal column
+# is always the verbatim UPPERCASE CBDT form so the f"{cbdt_code}-{
+# country_name_portal}" assembly continues to match the portal's
+# dropdown values exactly.
+#
+# Bug-fix history: this file previously listed
+#   1 -> United Kingdom (WRONG; code 1 is Canada in the portal)
+#   10 -> Netherlands (WRONG; the portal has no code 10; Netherlands is 31)
+# Both were sourced from third-party practitioner blogs that conflated
+# the CBDT codes with ISO numeric codes. Replaced with codes verified
+# directly against the official ITR-2 utility.
+#
+# ---------------------------------------------------------------------------
+# Refresh process for a future AY:
+#
+# 1. Download the new ITR-2 utility zip from the official Downloads page
+#    (https://www.incometax.gov.in/iec/foportal/downloads/income-tax-returns).
+# 2. Unzip and open ITR2_AY_XX-XX_V1.X.xlsm with openpyxl (read_only,
+#    keep_vba so the macro sheet loads). Read **all three** country
+#    named ranges from the `DropDownValues` sheet:
+#       * `Country`             (column BU, FA Tables A1-G + most forms)
+#       * `Country_NoIndia`     (column BW, FA Table A2 — adds ZM + EH)
+#       * `Country_Juridiction` (column BY, FSI jurisdiction picker)
+#    Take the union (excluding the "(Select)" prompt, "9999-OTHERS"
+#    fallback, and "9998-Not Applicable" sentinel). For AY 2025-26
+#    the union is 249 distinct countries.
+# 3. For each "{cbdt_code}-{NAME}" entry: split on the first "-",
+#    look up an ISO 3166-1 alpha-2 via pycountry, falling back to the
+#    manual override map below (20 entries for CBDT names that
+#    pycountry cannot auto-resolve due to portal-side quirks).
+# 4. Diff the regenerated CSV against the current vendored one. Any
+#    cbdt_code change (CBDT renumbering a country between AYs — rare
+#    but possible) MUST be surfaced in the PR description and locked
+#    by a regression test.
+# 5. Update the `extracted-at` / `expanded-at` line of this provenance
+#    file and the `upstream-utility-release-date`.
+#
+# ---------------------------------------------------------------------------
+# Manual override map (CBDT name → ISO 3166-1 alpha-2):
+#
+# These 20 entries are the CBDT portal names that pycountry's
+# `countries.lookup()` cannot resolve. Each ISO code below was verified
+# directly against the official ISO 3166-1 alpha-2 list (not derived
+# algorithmically). Three failure modes:
+#
+#  * Accent / diacritic stripped:
+#       REUNION                                       -> RE  (Réunion)
+#       SAINT BARTHELEMY                              -> BL  (Saint Barthélemy)
+#       COTE DIVOIRE                                  -> CI  (Côte d'Ivoire)
+#       ALAND ISLANDS                                 -> AX  (Åland Islands)
+#       CURACAO                                       -> CW  (Curaçao)
+#
+#  * Parenthesised long-form (CBDT lists the "official" UN form):
+#       BOLIVIA (PLURINATIONAL STATE OF)              -> BO
+#       CONGO (DEMOCRATIC REPUBLIC OF THE)            -> CD
+#       IRAN (ISLAMIC REPUBLIC OF)                    -> IR
+#       KOREA (DEMOCRATIC PEOPLES REPUBLIC OF)        -> KP
+#       KOREA (REPUBLIC OF)                           -> KR
+#       LAO PEOPLES DEMOCRATIC REPUBLIC               -> LA
+#       MACEDONIA (THE FORMER YUGOSLAV REPUBLIC OF)   -> MK  (now "North Macedonia" in ISO)
+#       MICRONESIA (FEDERATED STATES OF)              -> FM
+#       VENEZUELA (BOLIVARIAN REPUBLIC OF)            -> VE
+#       VIRGIN ISLANDS (BRITISH)                      -> VG
+#       VIRGIN ISLANDS (U.S.)                         -> VI
+#
+#  * Politically-outdated or short-form synonym:
+#       HOLY SEE                                      -> VA  (Vatican City State)
+#       SWAZILAND                                     -> SZ  (now Eswatini in ISO 2018)
+#       TIMOR-LESTE(EAST TIMOR)                       -> TL  (note missing space)
+#       TURKEY                                        -> TR  (ISO renamed to Türkiye 2022)
+#
+# ---------------------------------------------------------------------------
+# Columns:
+#
+# iso_alpha2          ISO 3166-1 alpha-2 country code (e.g., "US").
+#                     Used as the lookup key from IBKR's
+#                     IssuerCountryCode field.
+# cbdt_code           Numeric code as shown in the portal dropdown
+#                     (e.g., "2" for United States). Note these are
+#                     mostly E.164 country calling codes — but not
+#                     always (Canada is "1", USA is "2", etc.), so
+#                     do NOT derive these algorithmically.
+# country_name        Title-case country name suitable for the audit
+#                     section of the review CSV (less shouty than the
+#                     UPPERCASE portal form).
+# country_name_portal Verbatim UPPERCASE country name as it appears
+#                     in the portal dropdown. The portal-facing
+#                     Country column on Schedule FA Table A3 is
+#                     formed as f"{cbdt_code}-{country_name_portal}",
+#                     e.g., "2-UNITED STATES OF AMERICA".

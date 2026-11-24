@@ -1,0 +1,1 @@
+warning: the CMA account opening date uses the first supplied statement date because that statement proves no carried account or SPAXX balance; verify the bundle starts at legal account opening.

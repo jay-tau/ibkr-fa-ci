@@ -1,0 +1,15 @@
+Wrote 1 Schedule FA Table A3 row(s) for EXAMPLE CORP to <tmp>/fa.csv.
+  Row 1 Dec-31 close: manual price override (SPS year-end statement: 12-31 lot unpriced in the CSV and Dec statements)
+
+ESPP salary perquisite — advisory only (not a Schedule FA filed figure):
+  - 2025-12-31 (FY 2025-26): verify ₹6,613 (USD 74.34 = FMV - contribution) is included as salary in your Form 16. INR at the Rule 115(1), Explanation (2)(a) preceding-month-end SBI TTBR — indicative; your Form 16 figure governs.
+    For future capital gains the §49(2AA) cost of acquisition is the FMV at purchase (USD 743.30), NOT the USD 668.96 you paid.
+
+Wrote Schedule FA Table A2 (the account itself) to <tmp>/fa-a2.csv.
+  Closing balance = the held securities (Σ A3) + the proven-zero Dec-31 cash.
+  Peak Balance During the Period: MANUAL-FILL — select your account's highest native-currency single-day total (securities + cash), then convert it at that peak date's SBI TTBR; the statements do not provide a complete daily account-value series.
+  ℹ️  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap — do NOT add A2's balance to the A3 holding values when testing the Black Money Act ₹20-lakh threshold; that double-counts the same assets. Consult your CA.
+  warning: [netbenefits.account] institution_name names Fidelity Stock Plan Services. Its participant agreement says it does not maintain an account or hold assets for the participant (ADR 0021). This run still wrote the configured name into Table A2. Check your NetBenefits documents for the firm that holds your account; if they name a different firm, change institution_name, address and zip under [netbenefits.account].
+
+!! NOT filing-complete: fill the A2 peak balance above, then emit the
+   CBDT JSON fragment with a verified [[netbenefits.a2_peak_overrides]] value.

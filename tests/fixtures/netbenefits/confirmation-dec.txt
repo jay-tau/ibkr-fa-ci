@@ -1,0 +1,19 @@
+EXAMPLE CORPORATION
+              PARTICIPANT NO.
+              I99999999
+   TAX PAYER
+   1 MAIN STREET
+     CUSTOMER NO.   PARTICIPANT ID.   TYPE   TRADE DATE   SETTLEMENT DATE   TRANS NO.   CUSIP NO.
+              I99999999   1 000   12-31-25 01-05-26   9XQ2TZ 99999E104
+
+Confirmation of purchase made through your
+EXAMPLE ESPP PLAN on DEC/31/2025.        PURCHASE INFORMATION
+
+Offering period: NOV/03/2025 - DEC/31/2025   Market Value at Purchase¹   $743.30
+                                             Accumulated Contributions*  $668.96
+YOU PURCHASED 3.482 AT $192.1200 PURCHASE PRICE   Gain²   $74.34
+
+SECURITY DESCRIPTION   SYMBOL: XESP           EXPLANATION OF PROCEEDS
+EXAMPLE CORP                                 Accumulated Contributions   $668.96
+                                             Share Proceeds**   3.482
+* Accumulated Contributions are the amount of money contributed to your Plan.

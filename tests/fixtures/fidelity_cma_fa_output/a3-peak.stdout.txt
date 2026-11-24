@@ -1,0 +1,3 @@
+Wrote 2 Fidelity CMA Schedule FA A3 row(s) for CY2025 to <tmp>/schedule-fa.csv.
+  Table A2: <tmp>/schedule-fa-a2.csv.
+  A2 peak selection: upper; both bounds remain in audit columns.

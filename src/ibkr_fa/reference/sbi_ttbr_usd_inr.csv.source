@@ -1,0 +1,32 @@
+# Provenance for sbi_ttbr_usd_inr.csv
+# Refresh by running scripts/refresh_ttbr.py.
+
+upstream-repo: sahilgupta/sbi-fx-ratekeeper
+upstream-license: MIT
+upstream-path: csv_files/SBI_REFERENCE_RATES_USD.csv
+upstream-url: https://raw.githubusercontent.com/sahilgupta/sbi-fx-ratekeeper/8f97e181c666e5c51f1d62352631a8d6a352607e/csv_files/SBI_REFERENCE_RATES_USD.csv
+upstream-commit: 8f97e181c666e5c51f1d62352631a8d6a352607e
+fetched-at: 2026-11-01T12:29:15Z
+
+# ---------------------------------------------------------------------------
+# Vendor-time transformations applied to the raw upstream CSV
+# (the loader treats this file as-is; reproducible from upstream-commit
+# above by applying these same rules):
+#
+# 1. Dedup by calendar date.
+#    Upstream emits one row per SBI publication. SBI sometimes publishes
+#    intraday updates, producing 2+ rows per calendar date. We collapse
+#    each date to a single row by keeping the LAST published rate of the
+#    day (close-of-business intuition).
+#
+# 2. Sort by calendar date ascending.
+#    Required so loader can binary-search and so any human inspection
+#    is monotonic.
+#
+# 3. Zero-rate rows are KEPT in the file.
+#    Days when SBI did not publish a TT-Buying rate appear with
+#    TT BUY = "0" or "0.00" (both string forms occur). The loader skips
+#    rows where the parsed TT BUY value equals 0 (use numeric comparison,
+#    not a string match against "0.00", or you'll miss the "0" rows).
+#    The FaExactDatePolicy carry-forward then takes over.
+#    Earliest valid (non-zero) TT BUY rate is 2020-01-06.

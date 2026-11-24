@@ -1,0 +1,66 @@
+
+========================================================================
+  run-all: schedule-os
+========================================================================
+228 0
+
+========================================================================
+  run-all: schedule-cg
+========================================================================
+0
+
+========================================================================
+  run-all: schedule-cg-ltcg
+========================================================================
+0
+
+========================================================================
+  run-all: schedule-fsi
+========================================================================
+cbdt_country_code,head_of_income,income_inr_rounded,foreign_tax_inr_rounded
+2,Other Sources,228,35
+
+========================================================================
+  run-all: schedule-tr
+========================================================================
+cbdt_country_code,iso_alpha2,country_name_portal,foreign_tax_inr_total_portal_displayed,foreign_tax_inr_total_full_precision,event_count
+2,US,UNITED STATES OF AMERICA,35,35.080,1
+
+========================================================================
+  run-all: form-67
+========================================================================
+serial_number,cbdt_country_code,iso_alpha2,country_name_portal,source_of_income,income_inr,foreign_tax_inr,foreign_tax_rate_percent,event_count
+1,2,US,UNITED STATES OF AMERICA,Dividend,228.020,35.080,15.38461538461538461538461538,1
+
+========================================================================
+  run-all: schedule-fa
+========================================================================
+Wrote 3 Schedule FA Table A3 row(s) to <tmp>/out/schedule-fa.csv
+  Input format: activity-statement
+  Account: U********
+
+⚠️  The following portal columns contain blank values. Verify each missing fact and edit the review file before pasting into the portal:
+  - Address of entity
+  - ZIP Code
+  - Nature of entity
+  - Peak value of investment during the Period
+   Address of entity is missing for these holdings; verify the issuer's address from authoritative issuer material and set address in one [[fa.entities]] block per ISIN:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+   ZIP Code is missing for these holdings; verify the issuer's postal code from authoritative issuer material and set zip in that ISIN's [[fa.entities]] block:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+   Nature of entity is missing for these holdings; verify the legal entity type from authoritative issuer material and set nature_of_entity in that ISIN's [[fa.entities]] block:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+       nature_of_entity = "Company"  # example only; verify yours
+   Peak value is blank for these holdings because price fetching was off (--no-fetch-prices) and no complete price cache was found:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+       Re-run without --no-fetch-prices to compute it.
+
+Exit status: 3 (manual-fill columns present — see above).
+
+ℹ️  No dividend activity found for the calendar year: this Activity Statement has neither a 'Dividends' nor a 'Change in Dividend Accruals' section (IBKR omits both when there were none), so the 'Total gross amount paid/credited...' column is set to 0 for every holding. This zero is inferred only from the statement provided — verify it reflects no dividend, payment-in-lieu, or other distribution activity on these holdings before filing, and edit the value if you received any not shown here.
+
+ℹ️  Schedule FA Table A2 (the foreign custodial account itself) was NOT generated because [account.custodian] is not configured in user.toml. ITR-2 requires disclosing the IBKR account in Table A2 (foreign custodial account) IN ADDITION TO the holdings inside it in Table A3 (written above) — Table A3 on its own is an incomplete Schedule FA disclosure. The custodian's name / address / country are not carried in the IBKR statement, so they must be supplied: add an [account.custodian] block to user.toml (run `ibkr-fa init` for an annotated template) and re-run to emit Table A2.

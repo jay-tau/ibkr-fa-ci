@@ -1,0 +1,35 @@
+# Normalise line endings to LF on commit for text files.
+# Without this, a contributor on Windows whose Git is configured with
+# core.autocrlf=true can introduce CRLF into vendored data files
+# (notably the reference CSVs whose loader pre-commit hook
+# `mixed-line-ending` would otherwise rewrite after every checkout).
+*               text=auto eol=lf
+
+# Reference data CSVs: always LF, no exceptions. The pre-commit
+# `mixed-line-ending` hook is the safety net; this attribute is the
+# canonical contract.
+*.csv           text eol=lf
+*.csv.source    text eol=lf
+
+# Python sources: always LF (ruff format would otherwise produce
+# inconsistent line endings on cross-platform diff).
+*.py            text eol=lf
+
+# Shell scripts: must be LF (bash on Linux rejects CRLF in shebangs
+# silently — the script appears to run but with a corrupt interpreter
+# path).
+*.sh            text eol=lf
+
+# Markdown / YAML / TOML config: LF for consistency with Python.
+*.md            text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+*.toml          text eol=lf
+
+# Binary files: never normalise.
+*.xlsm          binary
+*.xlsx          binary
+*.zip           binary
+*.png           binary
+*.jpg           binary
+*.pdf           binary

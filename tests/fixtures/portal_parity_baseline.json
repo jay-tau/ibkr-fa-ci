@@ -1,0 +1,2100 @@
+{
+ "provenance": {
+  "captured_from": "6c20527eef46fade2e71a6b442e472519278cbb2",
+  "identical_at": "612f2be4eaa6b89ac8be7db972344248a6581364",
+  "method": "Recorded once by these tests' own record functions on a git archive of captured_from with only the parity test files added; the tests compare and never write this file. See docs/architecture.md, Portal artifact parity.",
+  "fixed_clock": "2026-04-01T09:30:00 UTC (tests/_portal_parity.py FIXED_INSTANT)",
+  "python": "3.12.13",
+  "openpyxl": "3.1.5",
+  "zlib": "1.3.1"
+ },
+ "portal-commands": {
+  "fidelity-cma-cg": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-cg-ltcg.csv": {
+     "sha256": "626473d19bb1115c0376c0e5544db22b92d7fed8c3d919798e071766016c1824",
+     "size": 3319
+    },
+    "schedule-cg.csv": {
+     "sha256": "a30c11a9c7ed994f682467f26b063a9b97e52a914f3a9b29851a5a4e537a21cf",
+     "size": 2921
+    }
+   },
+   "stderr": [
+    "SPAXX redemption gains are reported at slab rate under Schedule CG A/5(e); they are NOT Section 111A. Every supported closure is within 24 months, so the unsettled section 50AA foreign-fund question cannot change this run's in-FY STCG classification.\n"
+   ],
+   "stdout": [
+    "Wrote Fidelity CMA Schedule CG review CSVs for FY 2025-26 to <tmp>/out.\n",
+    "  Statements: 16; in-FY SPAXX sales: 2; FIFO slices: 5; STCG rows: 4; LTCG rows: 0; out-of-FY slices: 1.\n",
+    "  Total STCG INR (rounded): 0.\n"
+   ]
+  },
+  "fidelity-cma-fa/filing-csv": {
+   "exit_code": 3,
+   "outputs": {
+    "schedule-fa-a2.csv": {
+     "sha256": "8bc46207fd01dc69327f64a473fd08f2824c71f7eab73f9d955ac69b9ed747de",
+     "size": 672
+    },
+    "schedule-fa.csv": {
+     "sha256": "3443b5ea94f706cf356c5cdad2da723a0c4ad2b1ccfb91d40f1eacc089af31e6",
+     "size": 5410
+    }
+   },
+   "stderr": [
+    "warning: the CMA account opening date uses the first supplied statement date because that statement proves no carried account or SPAXX balance; verify the bundle starts at legal account opening.\n",
+    "warning: A2 peak is blank because same-day credits and debits lack a shared timestamp/order. The upload has no audit columns; --format review-csv or xlsx writes the proven lower bound and conservative upper bound, each converted at its own date's TTBR; under the default native-currency peak selection their rupee order can differ from the native order. To file one, set [fidelity_cma].suppress_peak_balance_warning = true and choose peak_balance_bound = \"lower\" or \"upper\"; upper is more conservative in native currency and may overstate, while lower may understate the actual intraday peak. An attested bound is refused when the lower bound converts to more rupees than the upper.\n",
+    "warning: manual entry required for A2 Peak Balance During the Period.\n"
+   ],
+   "stdout": [
+    "Wrote 37 Fidelity CMA Schedule FA A3 row(s) for CY2025 to <tmp>/out/schedule-fa.csv.\n",
+    "  Table A2: <tmp>/out/schedule-fa-a2.csv.\n",
+    "  A2 peak selection: manual-fill; both bounds are in the review-csv and xlsx audit columns, not in the upload.\n"
+   ]
+  },
+  "fidelity-cma-fa/filing-csv/attested": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-fa-a2.csv": {
+     "sha256": "09914c5547d1a90263ae3937e9db826643ccd9f415b16e461fefe9f81f5df471",
+     "size": 690
+    },
+    "schedule-fa.csv": {
+     "sha256": "3443b5ea94f706cf356c5cdad2da723a0c4ad2b1ccfb91d40f1eacc089af31e6",
+     "size": 5410
+    }
+   },
+   "stderr": [
+    "warning: the CMA account opening date uses the first supplied statement date because that statement proves no carried account or SPAXX balance; verify the bundle starts at legal account opening.\n"
+   ],
+   "stdout": [
+    "Wrote 37 Fidelity CMA Schedule FA A3 row(s) for CY2025 to <tmp>/out/schedule-fa.csv.\n",
+    "  Table A2: <tmp>/out/schedule-fa-a2.csv.\n",
+    "  A2 peak selection: upper; both bounds are in the review-csv and xlsx audit columns, not in the upload.\n"
+   ]
+  },
+  "fidelity-cma-income": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "7e995b4feeedd1311110fea7953d9a6fdf82721874f1673d4361bac3a779297f",
+     "size": 733
+    },
+    "schedule-fsi.csv": {
+     "sha256": "8f8720b862f8fa0f6ca837807077cc1aa1bf2195ceaa4981d59b52336ed55c4c",
+     "size": 314
+    },
+    "schedule-os.csv": {
+     "sha256": "c2245cdafdc48fa05f35c46f8273d112a5e35aabab6fb624d6bada42ffb84aae",
+     "size": 1253
+    },
+    "schedule-tr.csv": {
+     "sha256": "426056ef4fb998a4c925777ebc802fe0bf7761c3dd6f47e1147c99e3af6e56b2",
+     "size": 280
+    }
+   },
+   "stderr": [
+    "warning: US tax year 2025 refund status is unknown; FTC is blocked for the entire FY until every in-FY withholding year is finalized or no-refund-claim and reconciled. To claim it, give the [[fidelity_cma.us_tax_years]] entry with tax_year = 2025 refund_status = \"finalized\" or \"no-refund-claim\", a non-empty provenance string and eligible_tax = [{ payment_date = YYYY-MM-DD, amount_usd = \"0.00\" }, ...] with one entry for every withholding date in 2025 on the statements: the whole-cent US tax owed on that payment, 0 allowed, never more than the statement withheld\n"
+   ],
+   "stdout": [
+    "Wrote Fidelity CMA Schedule OS / FSI / TR filing CSVs and Form 67 debug CSV (official Form 67 CSV withheld: FTC is blocked; see the warning above) for FY 2025-26.\n",
+    "  Dividends: 12; Credit Interest: 12 (Schedule OS 1b(ix) total: \u20b9112); actual withholdings: 3; eligible withholdings: 0.\n",
+    "  Schedule OS dividend rows: 12; interest rows: 12; FSI: 1; TR: 0; Form 67: 0.\n",
+    "  Schedule FSI includes Fidelity CMA SPAXX capital gains: 4 STCG, 0 LTCG.\n",
+    "  FTC status: BLOCKED.\n"
+   ]
+  },
+  "fidelity-cma-income/debug": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "7e995b4feeedd1311110fea7953d9a6fdf82721874f1673d4361bac3a779297f",
+     "size": 733
+    },
+    "schedule-fsi-debug.csv": {
+     "sha256": "ef8b9c36ac7ed5d6925c0585a5cb592c2938fd82e8eaef8617a75fe8ee2e63f7",
+     "size": 538
+    },
+    "schedule-fsi.csv": {
+     "sha256": "8f8720b862f8fa0f6ca837807077cc1aa1bf2195ceaa4981d59b52336ed55c4c",
+     "size": 314
+    },
+    "schedule-os-debug.csv": {
+     "sha256": "090ececa751fae81bf61c896d8895e584932604c4accb553199ec9ec175d3c0b",
+     "size": 2112
+    },
+    "schedule-os.csv": {
+     "sha256": "c2245cdafdc48fa05f35c46f8273d112a5e35aabab6fb624d6bada42ffb84aae",
+     "size": 1253
+    },
+    "schedule-tr-debug.csv": {
+     "sha256": "6b009fa04743964219fe6855c2edf8e024ff0706740dc61ca2cb59bfd534e976",
+     "size": 409
+    },
+    "schedule-tr.csv": {
+     "sha256": "426056ef4fb998a4c925777ebc802fe0bf7761c3dd6f47e1147c99e3af6e56b2",
+     "size": 280
+    }
+   },
+   "stderr": [
+    "warning: US tax year 2025 refund status is unknown; FTC is blocked for the entire FY until every in-FY withholding year is finalized or no-refund-claim and reconciled. To claim it, give the [[fidelity_cma.us_tax_years]] entry with tax_year = 2025 refund_status = \"finalized\" or \"no-refund-claim\", a non-empty provenance string and eligible_tax = [{ payment_date = YYYY-MM-DD, amount_usd = \"0.00\" }, ...] with one entry for every withholding date in 2025 on the statements: the whole-cent US tax owed on that payment, 0 allowed, never more than the statement withheld\n",
+    "Wrote non-filing debug audits: <tmp>/out/schedule-os-debug.csv, <tmp>/out/schedule-fsi-debug.csv, <tmp>/out/schedule-tr-debug.csv, <tmp>/out/form-67-debug.csv.\n"
+   ],
+   "stdout": [
+    "Wrote Fidelity CMA Schedule OS / FSI / TR filing CSVs and Form 67 debug CSV (official Form 67 CSV withheld: FTC is blocked; see the warning above) for FY 2025-26.\n",
+    "  Dividends: 12; Credit Interest: 12 (Schedule OS 1b(ix) total: \u20b9112); actual withholdings: 3; eligible withholdings: 0.\n",
+    "  Schedule OS dividend rows: 12; interest rows: 12; FSI: 1; TR: 0; Form 67: 0.\n",
+    "  Schedule FSI includes Fidelity CMA SPAXX capital gains: 4 STCG, 0 LTCG.\n",
+    "  FTC status: BLOCKED.\n"
+   ]
+  },
+  "form-67/blank": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "9f18327cba3ed37448045af2cc9df602299ce36fea24a642b05d58baeaeeafde",
+     "size": 830
+    }
+   },
+   "stderr": [
+    "\u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n",
+    "\n",
+    "\u2139\ufe0f  Form 67 DTAA article + rate (cols 9-10) populated, but cols 7 and 11-13 remain blank until exact Indian tax attributable to the source is supplied.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Form 67 \u2014 Statement of foreign income and Foreign Tax Credit\n",
+    "Wrote 1 Form 67 entries to <tmp>/out/form-67-debug.csv\n",
+    "  Official Form 67 CSV withheld: one or more entries lack Indian tax payable and credit. Complete them from this review CSV before filing.\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-entry breakdown:\n",
+    "    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count\n",
+    "    1 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 34 | 15.00% | 1\n",
+    "\n",
+    "  Total income from outside India (portal-displayed): INR 228\n",
+    "  Total foreign tax paid (portal-displayed): INR 34\n",
+    "  Total foreign tax paid (full precision): INR 34.203\n",
+    "  DTAA article + rate columns: POPULATED (cols 9-10) from DTAA reference data; cols 7, 11-13 BLANK until exact Indian tax attributable to the source is supplied\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 2\n",
+    "    OS dividends: 1\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 1\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 1\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n"
+   ]
+  },
+  "form-67/fractional-rates/blank": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "bb5955279c13f2a9bd88adf9c1b52a6ac513a963232728d98abda1dfa6efaaf0",
+     "size": 909
+    }
+   },
+   "stderr": [
+    "Form 67 CSV importer may blank fractional Rate(%) 15.38 for country code 1; after upload, enter 15.38 manually and verify it before saving. Do not round it to an integer.\n",
+    "Form 67 CSV importer may blank fractional Rate(%) 15.38 for country code 2; after upload, enter 15.38 manually and verify it before saving. Do not round it to an integer.\n",
+    "\u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n",
+    "\n",
+    "\u2139\ufe0f  Form 67 DTAA article + rate (cols 9-10) populated, but cols 7 and 11-13 remain blank until exact Indian tax attributable to the source is supplied.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Form 67 \u2014 Statement of foreign income and Foreign Tax Credit\n",
+    "Wrote 2 Form 67 entries to <tmp>/out/form-67-debug.csv\n",
+    "  Official Form 67 CSV withheld: one or more entries lack Indian tax payable and credit. Complete them from this review CSV before filing.\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-entry breakdown:\n",
+    "    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count\n",
+    "    1 | 1 | CA | CANADA | Dividend | INR 228 | INR 35 | 15.38% | 1\n",
+    "    2 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 35 | 15.38% | 1\n",
+    "\n",
+    "  Total income from outside India (portal-displayed): INR 456\n",
+    "  Total foreign tax paid (portal-displayed): INR 70\n",
+    "  Total foreign tax paid (full precision): INR 70.160\n",
+    "  DTAA article + rate columns: POPULATED (cols 9-10) from DTAA reference data; cols 7, 11-13 BLANK until exact Indian tax attributable to the source is supplied\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 3\n",
+    "    OS dividends: 2\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 1\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 2\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n"
+   ]
+  },
+  "form-67/fractional-rates/ready": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "7a31c981173131f2fdb9473578c1b3c7d5aca4b0b7865b3326d3d64084d6541a",
+     "size": 518
+    }
+   },
+   "stderr": [
+    "Form 67 CSV importer may blank fractional Rate(%) 15.38 for country code 1; after upload, enter 15.38 manually and verify it before saving. Do not round it to an integer.\n",
+    "Form 67 CSV importer may blank fractional Rate(%) 15.38 for country code 2; after upload, enter 15.38 manually and verify it before saving. Do not round it to an integer.\n",
+    "\n",
+    "\u2139\ufe0f  Form 67 relief columns (7, 9-13) populated from exact overrides plus DTAA-vendored reference data. Verify the rendered tax payable / DTAA article / \u00a790 / \u00a791 / total credit values against your CA's expectations before filing. Col 8 (\u00a7115JB/JC special-rate tax payable, for assessees subject to MAT / AMT) is the only sub-step still unimplemented (#235); fill that one manually if applicable.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Form 67 \u2014 Statement of foreign income and Foreign Tax Credit\n",
+    "Wrote 2 Form 67 entries to <tmp>/out/form-67.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-entry breakdown:\n",
+    "    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count\n",
+    "    1 | 1 | CA | CANADA | Dividend | INR 228 | INR 35 | 15.38% | 1\n",
+    "    2 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 35 | 15.38% | 1\n",
+    "\n",
+    "  Total income from outside India (portal-displayed): INR 456\n",
+    "  Total foreign tax paid (portal-displayed): INR 70\n",
+    "  Total foreign tax paid (full precision): INR 70.160\n",
+    "  Tax payable + DTAA article/rate + FTC credit columns: POPULATED (cols 7, 9-13) from exact overrides plus DTAA reference data (col 8 \u00a7115JB/JC special-rate still unimplemented per #235)\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 3\n",
+    "    OS dividends: 2\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 1\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 2\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n"
+   ]
+  },
+  "form-67/portal-csv": {
+   "exit_code": 0,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "cc921ccf6026dfbecf0dafbf3dc181091d2726de4fc7fca6f5f8fbec5de77b8b",
+     "size": 476
+    }
+   },
+   "stderr": [
+    "\u2139\ufe0f  Form 67 relief columns (7, 9-13) populated from exact overrides plus DTAA-vendored reference data. Verify the rendered tax payable / DTAA article / \u00a790 / \u00a791 / total credit values against your CA's expectations before filing. Col 8 (\u00a7115JB/JC special-rate tax payable, for assessees subject to MAT / AMT) is the only sub-step still unimplemented (#235); fill that one manually if applicable.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Form 67 \u2014 Statement of foreign income and Foreign Tax Credit\n",
+    "Wrote 1 Form 67 entries to <tmp>/out/form-67.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-entry breakdown:\n",
+    "    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count\n",
+    "    1 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 34 | 15.00% | 1\n",
+    "\n",
+    "  Total income from outside India (portal-displayed): INR 228\n",
+    "  Total foreign tax paid (portal-displayed): INR 34\n",
+    "  Total foreign tax paid (full precision): INR 34.203\n",
+    "  Tax payable + DTAA article/rate + FTC credit columns: POPULATED (cols 7, 9-13) from exact overrides plus DTAA reference data (col 8 \u00a7115JB/JC special-rate still unimplemented per #235)\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 2\n",
+    "    OS dividends: 1\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 1\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 1\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n"
+   ]
+  },
+  "form-67/refused": {
+   "exit_code": 4,
+   "outputs": {},
+   "stderr": [
+    "error: ConfigError at field 'form67': Form 67 cannot be produced: US/DIVIDEND: the computed credit rounds to \u20b90 in whole rupees, the amount Form 67 files; zero-credit rows are refused under the owner's #601 policy. To produce the other outputs, remove the [[form67.tax_payable_overrides]] entry for US/DIVIDEND; the row is then left blank for manual Form 67 work, and Schedule FSI tax and relief are completed by hand, entering 0 only where the whole FSI row's tax really is 0.\n"
+   ],
+   "stdout": []
+  },
+  "netbenefits-all": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "36943af6c44d4cf0cb38013843d7fab92f549d52599ac33ea6abd8f0b953decc",
+     "size": 831
+    },
+    "schedule-cg-ltcg.csv": {
+     "sha256": "14e46d53cdff8f12b8116653491ed743d290150ef6e4a1079334d5e9efb32035",
+     "size": 1981
+    },
+    "schedule-cg.csv": {
+     "sha256": "892feba67df26de34f2d24ff2b3fb76a6971f8139c5fa18de26abec1424baca4",
+     "size": 1957
+    },
+    "schedule-fa-a2.csv": {
+     "sha256": "2c9c7a9b26b858831d2342f5d0b43620fab514ebb140ef238be700b26b48d2e5",
+     "size": 373
+    },
+    "schedule-fa-a3.csv": {
+     "sha256": "a4a822d684816a332aa7564fa0db645b7cfc6760a98cf7bff02e030b180cdafc",
+     "size": 497
+    },
+    "schedule-fsi.csv": {
+     "sha256": "f58e6d8775fa8343fb3a4852c2eca04a8e34df075dfb85afa948a7a4d012b657",
+     "size": 1544
+    },
+    "schedule-os.csv": {
+     "sha256": "914089ab50f1f39c7614fb90eed9a76126e87c418e606288679eec0c4fef8e76",
+     "size": 1246
+    },
+    "schedule-tr.csv": {
+     "sha256": "ef9fe920310aad7466ed9f391058b92ad1a2ba26f697d1cd98f3c742c6853467",
+     "size": 322
+    }
+   },
+   "stderr": [
+    "warning: \u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n",
+    "========================================================================\n",
+    "  netbenefits-all summary (FY 2025-26)\n",
+    "========================================================================\n",
+    "  manual-fill  netbenefits-fa\n",
+    "  manual-fill  netbenefits-income\n",
+    "  ok           netbenefits-cg\n",
+    "  'ERROR' = that schedule was NOT produced; 'manual-fill' = user work remains; 'not required' = the source proved zero activity. Do NOT file until every manual-fill or ERROR line is resolved.\n"
+   ],
+   "stdout": [
+    "\n",
+    "========================================================================\n",
+    "  netbenefits-all: netbenefits-fa\n",
+    "========================================================================\n",
+    "Wrote 1 Schedule FA Table A3 row(s) for EXAMPLE CORP to <tmp>/out/schedule-fa-a3.csv.\n",
+    "  Row 1 Dec-31 close: manual price override (SPS year-end statement: 12-31 lot unpriced in the CSV and Dec statements)\n",
+    "\n",
+    "ESPP salary perquisite \u2014 advisory only (not a Schedule FA filed figure):\n",
+    "  - 2025-12-31 (FY 2025-26): verify \u20b96,613 (USD 74.34 = FMV - contribution) is included as salary in your Form 16. INR at the Rule 115(1), Explanation (2)(a) preceding-month-end SBI TTBR \u2014 indicative; your Form 16 figure governs.\n",
+    "    For future capital gains the \u00a749(2AA) cost of acquisition is the FMV at purchase (USD 743.30), NOT the USD 668.96 you paid.\n",
+    "\n",
+    "Wrote Schedule FA Table A2 (the account itself) to <tmp>/out/schedule-fa-a2.csv.\n",
+    "  Closing balance = the held securities (\u03a3 A3) + the proven-zero Dec-31 cash.\n",
+    "  Peak Balance During the Period: MANUAL-FILL \u2014 select your account's highest native-currency single-day total (securities + cash), then convert it at that peak date's SBI TTBR; the statements do not provide a complete daily account-value series.\n",
+    "  \u2139\ufe0f  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap \u2014 do NOT add A2's balance to the A3 holding values when testing the Black Money Act \u20b920-lakh threshold; that double-counts the same assets. Consult your CA.\n",
+    "  warning: [netbenefits.account] institution_name names Fidelity Stock Plan Services. Its participant agreement says it does not maintain an account or hold assets for the participant (ADR 0021). This run still wrote the configured name into Table A2. Check your NetBenefits documents for the firm that holds your account; if they name a different firm, change institution_name, address and zip under [netbenefits.account].\n",
+    "\n",
+    "!! NOT filing-complete: fill the A2 peak balance above, then emit the\n",
+    "   CBDT JSON fragment with a verified [[netbenefits.a2_peak_overrides]] value.\n",
+    "\n",
+    "========================================================================\n",
+    "  netbenefits-all: netbenefits-income\n",
+    "========================================================================\n",
+    "Wrote Schedule OS / FSI / TR filing CSVs and Form 67 debug CSV (official Form 67 CSV withheld: one or more entries lack Indian tax payable and credit) for FY 2025-26 to <tmp>/out.\n",
+    "  Dividends: 1; withholdings: 1.\n",
+    "  Schedule OS foreign-source 1a(i) detail rows: 1; Schedule FSI rows: 1; Schedule TR rows: 1; Form 67 entries: 1.\n",
+    "  \u2139\ufe0f  The FTC withholding (USD 0.36) is statement-derived. Reconcile it against the authoritative 1042-S / SPS Grantor Letter once issued (typically the following year, so it covers a US CALENDAR year - allocate its withholding to this Indian FY) via --reconcile-1042s-fy-withholding-usd. Do NOT delay filing for the 1042-S.\n",
+    "\n",
+    "========================================================================\n",
+    "  netbenefits-all: netbenefits-cg\n",
+    "========================================================================\n",
+    "Wrote Schedule CG (STCG + LTCG) review CSVs for FY 2025-26 to <tmp>/out.\n",
+    "  STCG lines: 0 (total realized gain INR 0); LTCG lines: 0 (total realized gain INR 0).\n",
+    "  Note: the statements prove this FY had no sale, so these CSVs file no capital gains. Run `netbenefits-fa` separately for the year-end Schedule FA holdings disclosure.\n"
+   ]
+  },
+  "netbenefits-fa": {
+   "exit_code": 3,
+   "outputs": {
+    "schedule-fa-a2.csv": {
+     "sha256": "2c9c7a9b26b858831d2342f5d0b43620fab514ebb140ef238be700b26b48d2e5",
+     "size": 373
+    },
+    "schedule-fa-a3.csv": {
+     "sha256": "a4a822d684816a332aa7564fa0db645b7cfc6760a98cf7bff02e030b180cdafc",
+     "size": 497
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "Wrote 1 Schedule FA Table A3 row(s) for EXAMPLE CORP to <tmp>/out/schedule-fa-a3.csv.\n",
+    "  Row 1 Dec-31 close: manual price override (SPS year-end statement: 12-31 lot unpriced in the CSV and Dec statements)\n",
+    "\n",
+    "ESPP salary perquisite \u2014 advisory only (not a Schedule FA filed figure):\n",
+    "  - 2025-12-31 (FY 2025-26): verify \u20b96,613 (USD 74.34 = FMV - contribution) is included as salary in your Form 16. INR at the Rule 115(1), Explanation (2)(a) preceding-month-end SBI TTBR \u2014 indicative; your Form 16 figure governs.\n",
+    "    For future capital gains the \u00a749(2AA) cost of acquisition is the FMV at purchase (USD 743.30), NOT the USD 668.96 you paid.\n",
+    "\n",
+    "Wrote Schedule FA Table A2 (the account itself) to <tmp>/out/schedule-fa-a2.csv.\n",
+    "  Closing balance = the held securities (\u03a3 A3) + the proven-zero Dec-31 cash.\n",
+    "  Peak Balance During the Period: MANUAL-FILL \u2014 select your account's highest native-currency single-day total (securities + cash), then convert it at that peak date's SBI TTBR; the statements do not provide a complete daily account-value series.\n",
+    "  \u2139\ufe0f  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap \u2014 do NOT add A2's balance to the A3 holding values when testing the Black Money Act \u20b920-lakh threshold; that double-counts the same assets. Consult your CA.\n",
+    "  warning: [netbenefits.account] institution_name names Fidelity Stock Plan Services. Its participant agreement says it does not maintain an account or hold assets for the participant (ADR 0021). This run still wrote the configured name into Table A2. Check your NetBenefits documents for the firm that holds your account; if they name a different firm, change institution_name, address and zip under [netbenefits.account].\n",
+    "\n",
+    "!! NOT filing-complete: fill the A2 peak balance above, then emit the\n",
+    "   CBDT JSON fragment with a verified [[netbenefits.a2_peak_overrides]] value.\n"
+   ]
+  },
+  "netbenefits-income": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "36943af6c44d4cf0cb38013843d7fab92f549d52599ac33ea6abd8f0b953decc",
+     "size": 831
+    },
+    "schedule-fsi.csv": {
+     "sha256": "f58e6d8775fa8343fb3a4852c2eca04a8e34df075dfb85afa948a7a4d012b657",
+     "size": 1544
+    },
+    "schedule-os.csv": {
+     "sha256": "914089ab50f1f39c7614fb90eed9a76126e87c418e606288679eec0c4fef8e76",
+     "size": 1246
+    },
+    "schedule-tr.csv": {
+     "sha256": "ef9fe920310aad7466ed9f391058b92ad1a2ba26f697d1cd98f3c742c6853467",
+     "size": 322
+    }
+   },
+   "stderr": [
+    "warning: \u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule OS / FSI / TR filing CSVs and Form 67 debug CSV (official Form 67 CSV withheld: one or more entries lack Indian tax payable and credit) for FY 2025-26 to <tmp>/out.\n",
+    "  Dividends: 1; withholdings: 1.\n",
+    "  Schedule OS foreign-source 1a(i) detail rows: 1; Schedule FSI rows: 1; Schedule TR rows: 1; Form 67 entries: 1.\n",
+    "  \u2139\ufe0f  The FTC withholding (USD 0.36) is statement-derived. Reconcile it against the authoritative 1042-S / SPS Grantor Letter once issued (typically the following year, so it covers a US CALENDAR year - allocate its withholding to this Indian FY) via --reconcile-1042s-fy-withholding-usd. Do NOT delay filing for the 1042-S.\n"
+   ]
+  },
+  "netbenefits-income/quicko-block": {
+   "exit_code": 0,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "92e73fe4d6dba9c865551b5f903dd12f98512460ef2a3da2467fa1b7fa562b45",
+     "size": 476
+    },
+    "schedule-fsi.csv": {
+     "sha256": "2d8b87dd2ad986604d4c0f999592722fe17259c361d5c5a8b1baba730f7a7416",
+     "size": 320
+    },
+    "schedule-os.csv": {
+     "sha256": "914089ab50f1f39c7614fb90eed9a76126e87c418e606288679eec0c4fef8e76",
+     "size": 1246
+    },
+    "schedule-tr.csv": {
+     "sha256": "a2b1abc98ac0b38b94040193211c7abe1b37eb47b4030bbee35514c6e03570dd",
+     "size": 640
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "Wrote Schedule OS / FSI / TR filing CSVs and official Form 67 CSV for FY 2025-26 to <tmp>/out.\n",
+    "  Dividends: 1; withholdings: 1.\n",
+    "  Schedule OS foreign-source 1a(i) detail rows: 1; Schedule FSI rows: 1; Schedule TR rows: 1; Form 67 entries: 1.\n",
+    "  \u2139\ufe0f  The FTC withholding (USD 0.36) is statement-derived. Reconcile it against the authoritative 1042-S / SPS Grantor Letter once issued (typically the following year, so it covers a US CALENDAR year - allocate its withholding to this Indian FY) via --reconcile-1042s-fy-withholding-usd. Do NOT delay filing for the 1042-S.\n"
+   ]
+  },
+  "netbenefits-income/refused": {
+   "exit_code": 4,
+   "outputs": {},
+   "stderr": [
+    "error: ConfigError at field 'form67': Form 67 cannot be produced: US/DIVIDEND: the computed credit rounds to \u20b90 in whole rupees, the amount Form 67 files; zero-credit rows are refused under the owner's #601 policy. To produce the other outputs, remove the [[form67.tax_payable_overrides]] entry for US/DIVIDEND; the row is then left blank for manual Form 67 work, and Schedule FSI tax and relief are completed by hand, entering 0 only where the whole FSI row's tax really is 0.\n"
+   ],
+   "stdout": []
+  },
+  "robinhood-all": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-cg.xlsx": {
+     "members": [
+      "docProps/app.xml 484dc746 205",
+      "docProps/core.xml 93b79f27 459",
+      "xl/theme/theme1.xml 239c5c99 10140",
+      "xl/worksheets/sheet1.xml 49258bcb 3766",
+      "xl/styles.xml 831dca93 3813",
+      "_rels/.rels 8aeb47b7 534",
+      "xl/workbook.xml 737e69d1 773",
+      "xl/_rels/workbook.xml.rels bae3eb33 507",
+      "[Content_Types].xml 8442869b 983"
+     ],
+     "sha256": "484f5e8941639fcbd21d85667ff4ec62e81fc4e1f19bcf5780947705907b36c9",
+     "size": 6259
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "ROBINHOOD SUMMARY \u2014 FY 2025-26 / CY 2025\n",
+    "STATUS: ok\n",
+    "  ok           equity-cg\n",
+    "                 -> warning: Robinhood foreign exchange-listed securities are reported in the Schedule CG field for assets other than unquoted shares. Section 50CA prescribed FMV was not computed; no CBDT guidance or binding ruling directly resolves this classification.\n",
+    "                 -> <tmp>/out/schedule-cg.xlsx\n",
+    "  ok           schedule-os\n",
+    "  ok           income-ftc\n",
+    "  ok           schedule-fa\n",
+    "  not-required fa-a1\n",
+    "  not-required options\n",
+    "  not-required product-scope\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ]
+  },
+  "robinhood-cg/debug": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-cg-debug.csv": {
+     "sha256": "8bda7335631e1ad802907fc2adde94ba61529c34e91803183f68fa297b5ea08e",
+     "size": 2544
+    },
+    "schedule-cg-ltcg-debug.csv": {
+     "sha256": "02471bf3fd743eda7d175c929de96c53b7e7c157027d08ed21eff6062f42593e",
+     "size": 2485
+    },
+    "schedule-cg.xlsx": {
+     "members": [
+      "docProps/app.xml 484dc746 205",
+      "docProps/core.xml 93b79f27 459",
+      "xl/theme/theme1.xml 239c5c99 10140",
+      "xl/worksheets/sheet1.xml 5c710d41 10268",
+      "xl/worksheets/sheet2.xml e9bb8f47 9831",
+      "xl/styles.xml 831dca93 3813",
+      "_rels/.rels 8aeb47b7 534",
+      "xl/workbook.xml 2146db89 1045",
+      "xl/_rels/workbook.xml.rels 2e725eab 653",
+      "[Content_Types].xml 581be1a5 1120"
+     ],
+     "sha256": "4d0d1aaa95fe2ad46c4df86f696f0e83f54e261698a085012e4f80d4b72719d3",
+     "size": 9637
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "Robinhood equity-cg: ok\n",
+    "  Wrote: <tmp>/out/schedule-cg.xlsx\n",
+    "  Wrote: <tmp>/out/schedule-cg-debug.csv\n",
+    "  Wrote: <tmp>/out/schedule-cg-ltcg-debug.csv\n",
+    "  Warning: Robinhood foreign exchange-listed securities are reported in the Schedule CG field for assets other than unquoted shares. Section 50CA prescribed FMV was not computed; no CBDT guidance or binding ruling directly resolves this classification.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ]
+  },
+  "robinhood-income": {
+   "exit_code": 0,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "272fd0a9333e1030a682f9b9ef3e49e4d42cbeaa828daf56631c9f3d3f52af4f",
+     "size": 483
+    },
+    "schedule-fsi.csv": {
+     "sha256": "e8927dd38ba3c14aa7dd6188a8903c5a3a6f396292359fab549d37f0867cbe95",
+     "size": 325
+    },
+    "schedule-os.xlsx": {
+     "members": [
+      "docProps/app.xml 484dc746 205",
+      "docProps/core.xml 93b79f27 459",
+      "xl/theme/theme1.xml 239c5c99 10140",
+      "xl/worksheets/sheet1.xml 5d30b201 4151",
+      "xl/worksheets/sheet2.xml 0d3364ec 2873",
+      "xl/worksheets/sheet3.xml 05a82a1a 2692",
+      "xl/styles.xml 805e89ee 3755",
+      "_rels/.rels 8aeb47b7 534",
+      "xl/workbook.xml 123d53b5 1142",
+      "xl/_rels/workbook.xml.rels 065d080b 799",
+      "[Content_Types].xml 8fcefbdb 1257"
+     ],
+     "sha256": "2f1c73cbb0e2347dd083ad613e2b21565116f4388f2fc73028ab8835f6c529a8",
+     "size": 8120
+    },
+    "schedule-tr.csv": {
+     "sha256": "032ba812d7e6032633615030bea47c03df0a031a7b0bfdac1c6b6dcbabcddc34",
+     "size": 332
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "Robinhood income-ftc: ok\n",
+    "  Wrote: <tmp>/out/schedule-os.xlsx\n",
+    "  Wrote: <tmp>/out/schedule-fsi.csv\n",
+    "  Wrote: <tmp>/out/schedule-tr.csv\n",
+    "  Wrote: <tmp>/out/form-67.csv\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ]
+  },
+  "run-all": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "cd7142296b16ac63f6f553fe32a71a7542668106a8166e89438e5fb05c45c84e",
+     "size": 475
+    },
+    "schedule-cg-ltcg.csv": {
+     "sha256": "14e46d53cdff8f12b8116653491ed743d290150ef6e4a1079334d5e9efb32035",
+     "size": 1981
+    },
+    "schedule-cg.csv": {
+     "sha256": "892feba67df26de34f2d24ff2b3fb76a6971f8139c5fa18de26abec1424baca4",
+     "size": 1957
+    },
+    "schedule-fa-a2.csv": {
+     "sha256": "b9c76ffc97e4244778b435551cfcf1da6befb5d906b7b4a60c0a78ed90258551",
+     "size": 1325
+    },
+    "schedule-fa.csv": {
+     "sha256": "34724142bece619c21e76562c79ca8435b42604cf92e58d6c6e470886af12d16",
+     "size": 1056
+    },
+    "schedule-fsi.csv": {
+     "sha256": "5242038570f5cd2f604b4b34a64bfe087602a7a0b1716d4c65ba176746159833",
+     "size": 560
+    },
+    "schedule-os.csv": {
+     "sha256": "b22b7204cbb9e89684ba162a4270f5ba4468c7be9eb6d074f6490156435a965f",
+     "size": 1117
+    },
+    "schedule-tr.csv": {
+     "sha256": "92a289d0e3a4d45d49702a1dad5549eff5d5a7ee3ceec33c851de7760671d36c",
+     "size": 468
+    }
+   },
+   "stderr": [
+    "\u2139\ufe0f  ADR / GDR source attribution: Indian-company ADRs / GDRs (INFY, IBN, HDB, WIT, RDY, ...) carry US- / Jersey- / Cayman-prefixed ISINs and remain foreign-source for FSI/TR/Form 67 under the depositary convention. If your CA prefers the underlying-issuer view, set [os].schedule_os_indian_adr_routing = 'underlying-issuer'. Either mode leaves the Schedule OS 1a(i) total unchanged.\n",
+    "\u2139\ufe0f  No in-FY foreign-source short-term capital gains found in FY 2025-26; wrote zero-row review CSV with TOTAL \u20b90.\n",
+    "\u2139\ufe0f  No in-FY foreign-source long-term capital gains found in FY 2025-26; wrote zero-row review CSV with TOTAL \u20b90.\n",
+    "\u2139\ufe0f  ADR / GDR routing note: Indian-company ADRs / GDRs are treated as foreign-source per the asset-as-held convention (default 'depositary' mode). Their dividends appear in the FSI under their depositary's source country (typically US / Jersey / Cayman), and any depositary-country WHT is layered onto the matching same-country row. If your CA prefers the underlying-issuer view, set [os].schedule_os_indian_adr_routing = 'underlying-issuer' in user.toml \u2014 the FSI compute layer symmetrically excludes the mapped Indian-ADR WHT to prevent silent absorption (issue #225 fix in PR #251).\n",
+    "\u2139\ufe0f  Schedule TR tax relief + section are POPULATED from exact overrides plus DTAA / \u00a791 reference data. Verify the \u00a790 / \u00a791 / total-relief values against your CA's expectations before filing.\n",
+    "\u2139\ufe0f  Form 67 relief columns (7, 9-13) populated from exact overrides plus DTAA-vendored reference data. Verify the rendered tax payable / DTAA article / \u00a790 / \u00a791 / total credit values against your CA's expectations before filing. Col 8 (\u00a7115JB/JC special-rate tax payable, for assessees subject to MAT / AMT) is the only sub-step still unimplemented (#235); fill that one manually if applicable.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n",
+    "\n",
+    "========================================================================\n",
+    "RUN-ALL SUMMARY \u2014 FY 2025-26 / Schedule FA calendar year 2025\n",
+    "STATUS: ACTION NEEDED \u2014 every schedule ran, but complete the manual-fill column(s) flagged below before filing.\n",
+    "========================================================================\n",
+    "  ok           schedule-os       <tmp>/out/schedule-os.csv\n",
+    "  ok           schedule-cg       <tmp>/out/schedule-cg.csv\n",
+    "  ok           schedule-cg-ltcg  <tmp>/out/schedule-cg-ltcg.csv\n",
+    "  ok           schedule-fsi      <tmp>/out/schedule-fsi.csv\n",
+    "  ok           schedule-tr       <tmp>/out/schedule-tr.csv\n",
+    "  ok           form-67           <tmp>/out/form-67.csv\n",
+    "  manual-fill  schedule-fa       <tmp>/out/schedule-fa.csv\n",
+    "                 -> review CSV needs manual columns before filing\n",
+    "  Schedule FA price cache / audit artifacts: <tmp>/out/.ibkr-fa-price-cache\n",
+    "========================================================================\n"
+   ],
+   "stdout": [
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-os\n",
+    "========================================================================\n",
+    "Wrote Schedule OS review to <tmp>/out/schedule-os.csv with 1 qualifying ordinary dividend payment(s) (1 foreign-source, 0 Indian-source)\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL 1a(i) ordinary dividends (rounded \u20b9): 228\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-cg\n",
+    "========================================================================\n",
+    "Wrote Schedule CG STCG review CSV with 0 in-FY short-term closure(s) to <tmp>/out/schedule-cg.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL realized gain (rounded \u20b9): 0\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-cg-ltcg\n",
+    "========================================================================\n",
+    "Wrote Schedule CG LTCG review CSV with 0 in-FY long-term closure(s) to <tmp>/out/schedule-cg-ltcg.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL realized gain (rounded \u20b9): 0\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-fsi\n",
+    "========================================================================\n",
+    "Wrote Schedule FSI review file with 1 per-(country, head-of-income) row(s) to <tmp>/out/schedule-fsi.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL income (rounded \u20b9): 228\n",
+    "  TOTAL foreign tax (rounded \u20b9): 34\n",
+    "  Aggregator consumption: 1 dividend(s), 0 interest event(s), 0 STCG row(s), 0 LTCG row(s), 1 in-FY WHT row(s)\n",
+    "\n",
+    "  Per-(country, head) breakdown:\n",
+    "    UNITED STATES OF AMERICA (CBDT 2) / Other Sources: income \u20b9228, foreign tax \u20b934, 1 event(s)\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-tr\n",
+    "========================================================================\n",
+    "Schedule TR \u2014 Summary of Tax Relief Claimed\n",
+    "Wrote 1 TR rows to <tmp>/out/schedule-tr.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-country breakdown:\n",
+    "    cbdt_country_code | iso_alpha2 | country_name_portal | foreign_tax_inr_total_portal_displayed | event_count\n",
+    "    2 | US | UNITED STATES OF AMERICA | INR 34 | 1\n",
+    "\n",
+    "  Total foreign tax paid (portal-displayed): INR 34\n",
+    "  Total foreign tax paid (full precision): INR 34.203\n",
+    "  Tax relief and section under which claimed: POPULATED from exact overrides plus DTAA / \u00a791 reference data \u2014 verify before filing\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 1\n",
+    "    OS dividends: 1\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 0\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 1\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: form-67\n",
+    "========================================================================\n",
+    "Form 67 \u2014 Statement of foreign income and Foreign Tax Credit\n",
+    "Wrote 1 Form 67 entries to <tmp>/out/form-67.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-entry breakdown:\n",
+    "    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count\n",
+    "    1 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 34 | 15.00% | 1\n",
+    "\n",
+    "  Total income from outside India (portal-displayed): INR 228\n",
+    "  Total foreign tax paid (portal-displayed): INR 34\n",
+    "  Total foreign tax paid (full precision): INR 34.203\n",
+    "  Tax payable + DTAA article/rate + FTC credit columns: POPULATED (cols 7, 9-13) from exact overrides plus DTAA reference data (col 8 \u00a7115JB/JC special-rate still unimplemented per #235)\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 1\n",
+    "    OS dividends: 1\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 0\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 1\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n",
+    "\n",
+    "========================================================================\n",
+    "  run-all: schedule-fa\n",
+    "========================================================================\n",
+    "Wrote 3 Schedule FA Table A3 row(s) to <tmp>/out/schedule-fa.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "\n",
+    "\u26a0\ufe0f  The following portal columns contain blank values. Verify each missing fact and edit the review file before pasting into the portal:\n",
+    "  - Address of entity\n",
+    "  - ZIP Code\n",
+    "  - Nature of entity\n",
+    "  - Peak value of investment during the Period\n",
+    "   Address of entity is missing for these holdings; verify the issuer's address from authoritative issuer material and set address in one [[fa.entities]] block per ISIN:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "   ZIP Code is missing for these holdings; verify the issuer's postal code from authoritative issuer material and set zip in that ISIN's [[fa.entities]] block:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "   Nature of entity is missing for these holdings; verify the legal entity type from authoritative issuer material and set nature_of_entity in that ISIN's [[fa.entities]] block:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "       nature_of_entity = \"Company\"  # example only; verify yours\n",
+    "   Peak value is blank for these holdings because price fetching was off (--no-fetch-prices) and no complete price cache was found:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "       Re-run without --no-fetch-prices to compute it.\n",
+    "\n",
+    "Exit status: 3 (manual-fill columns present \u2014 see above).\n",
+    "\n",
+    "\u2139\ufe0f  No dividend activity found for the calendar year: this Activity Statement has neither a 'Dividends' nor a 'Change in Dividend Accruals' section (IBKR omits both when there were none), so the 'Total gross amount paid/credited...' column is set to 0 for every holding. This zero is inferred only from the statement provided \u2014 verify it reflects no dividend, payment-in-lieu, or other distribution activity on these holdings before filing, and edit the value if you received any not shown here.\n",
+    "\n",
+    "Wrote Schedule FA Table A2 (foreign custodial account) 1 row(s) to <tmp>/out/schedule-fa-a2.csv\n",
+    "  \u26a0\ufe0f  Fill these Table A2 portal cell(s) before filing \u2014 left blank because they could not be computed with certainty:\n",
+    "    - Peak Balance During the Period\n",
+    "    - Closing balance\n",
+    "      The closing balance is blank because the statement has no Net Asset Value section, or that section has no asset-class table with a 'Current Total' column.\n",
+    "      Re-export the Activity Statement from IBKR with its Net Asset Value section and re-run. Otherwise, enter it by hand in the review CSV or XLSX, or in the portal: the account's Net Asset Value on 31 December of the requested calendar year, in its base currency, converted to INR at that date's SBI TTBR.\n",
+    "     Find your account's HIGHEST total native-currency value (securities + cash) on any single day of the calendar year, then convert it to INR at that peak date's SBI TTBR. Per Rule 114F a custodial account's value INCLUDES the cash held in it, not just the securities \u2014 and the statement carries no daily account NAV, so the peak day cannot be derived.\n",
+    "  \u2139\ufe0f  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap \u2014 do NOT add A2's balance to the A3 holding values when testing the Black Money Act \u20b920-lakh threshold; that double-counts the same assets. Consult your CA.\n"
+   ]
+  },
+  "schedule-fa/filing-csv": {
+   "exit_code": 3,
+   "outputs": {
+    "schedule-fa-a2.csv": {
+     "sha256": "4439ac02c6de82b7e08c1be75878d580278d1ee8904c2cc4e517f5f50cfe6d52",
+     "size": 369
+    },
+    "schedule-fa.csv": {
+     "sha256": "e94095ecab0a017c97605aff121b4850e63397ee0703f8c0a622d0c2145741d1",
+     "size": 552
+    }
+   },
+   "stderr": [],
+   "stdout": [
+    "Wrote 3 Schedule FA Table A3 row(s) to <tmp>/out/schedule-fa.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "\n",
+    "\u26a0\ufe0f  The following portal columns contain blank values. Verify each missing fact and edit the review file before pasting into the portal:\n",
+    "  - Address of entity\n",
+    "  - ZIP Code\n",
+    "  - Nature of entity\n",
+    "  - Peak value of investment during the Period\n",
+    "   Address of entity is missing for these holdings; verify the issuer's address from authoritative issuer material and set address in one [[fa.entities]] block per ISIN:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "   ZIP Code is missing for these holdings; verify the issuer's postal code from authoritative issuer material and set zip in that ISIN's [[fa.entities]] block:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "   Nature of entity is missing for these holdings; verify the legal entity type from authoritative issuer material and set nature_of_entity in that ISIN's [[fa.entities]] block:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "       nature_of_entity = \"Company\"  # example only; verify yours\n",
+    "   Peak value is blank for these holdings because price fetching was off (--no-fetch-prices) and no complete price cache was found:\n",
+    "     - XQBB (US99995B1044)\n",
+    "     - XQBE (US99995D1000)\n",
+    "       Re-run without --no-fetch-prices to compute it.\n",
+    "\n",
+    "Exit status: 3 (manual-fill columns present \u2014 see above).\n",
+    "\n",
+    "\u2139\ufe0f  No dividend activity found for the calendar year: this Activity Statement has neither a 'Dividends' nor a 'Change in Dividend Accruals' section (IBKR omits both when there were none), so the 'Total gross amount paid/credited...' column is set to 0 for every holding. This zero is inferred only from the statement provided \u2014 verify it reflects no dividend, payment-in-lieu, or other distribution activity on these holdings before filing, and edit the value if you received any not shown here.\n",
+    "\n",
+    "Wrote Schedule FA Table A2 (foreign custodial account) 1 row(s) to <tmp>/out/schedule-fa-a2.csv\n",
+    "  \u26a0\ufe0f  Fill these Table A2 portal cell(s) before filing \u2014 left blank because they could not be computed with certainty:\n",
+    "    - Peak Balance During the Period\n",
+    "     Find your account's HIGHEST total native-currency value (securities + cash) on any single day of the calendar year, then convert it to INR at that peak date's SBI TTBR. Per Rule 114F a custodial account's value INCLUDES the cash held in it, not just the securities \u2014 and the statement carries no daily account NAV, so the peak day cannot be derived.\n",
+    "     For reference, your PERIOD-END (Dec 31) account was USD 2107.60 = 100.00 cash + 2007.60 non-cash assets (securities etc.). These are year-end, NOT peak-day, figures (the peak may fall on another day, and each holding peaks on its own day) \u2014 do NOT simply add them; use IBKR's daily NAV report to find the true peak-day total.\n",
+    "  \u2139\ufe0f  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap \u2014 do NOT add A2's balance to the A3 holding values when testing the Black Money Act \u20b920-lakh threshold; that double-counts the same assets. Consult your CA.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ]
+  },
+  "schedule-fsi/filing-csv": {
+   "exit_code": 3,
+   "outputs": {
+    "schedule-fsi.csv": {
+     "sha256": "8545b9779b94be31ff45c908e2662755608642f511744811bc36665ef0e45e38",
+     "size": 1766
+    }
+   },
+   "stderr": [
+    "\u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n",
+    "\n",
+    "\u2139\ufe0f  ADR / GDR routing note: Indian-company ADRs / GDRs are treated as foreign-source per the asset-as-held convention (default 'depositary' mode). Their dividends appear in the FSI under their depositary's source country (typically US / Jersey / Cayman), and any depositary-country WHT is layered onto the matching same-country row. If your CA prefers the underlying-issuer view, set [os].schedule_os_indian_adr_routing = 'underlying-issuer' in user.toml \u2014 the FSI compute layer symmetrically excludes the mapped Indian-ADR WHT to prevent silent absorption (issue #225 fix in PR #251).\n",
+    "\n",
+    "\u2139\ufe0f  Foreign Taxpayer Identification Number is BLANK for one or more countries where foreign tax was paid. On Schedule FSI / TR this number is generally MANDATORY when claiming foreign-tax relief under section 90 / 90A / 91 \u2014 leaving it blank can delay processing or cause the relief to be denied. The IBKR statement does not carry your foreign TIN, so add it to user.toml under [account.foreign_tins], keyed by the country's ISO 3166-1 alpha-2 code (e.g. US = \"123456789\"; run `ibkr-fa init` for an annotated template), then re-run \u2014 one entry fills BOTH Schedule FSI and Schedule TR. If that country did not allot you a TIN, enter your passport number instead.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule FSI review file with 2 per-(country, head-of-income) row(s) to <tmp>/out/schedule-fsi.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL income (rounded \u20b9): 26913\n",
+    "  TOTAL foreign tax (rounded \u20b9): 34\n",
+    "  Aggregator consumption: 1 dividend(s), 0 interest event(s), 1 STCG row(s), 0 LTCG row(s), 1 in-FY WHT row(s)\n",
+    "\n",
+    "  Per-(country, head) breakdown:\n",
+    "    UNITED STATES OF AMERICA (CBDT 2) / Capital Gains: income \u20b926685, foreign tax \u20b90, 1 event(s)\n",
+    "    UNITED STATES OF AMERICA (CBDT 2) / Other Sources: income \u20b9228, foreign tax \u20b934, 1 event(s)\n"
+   ]
+  },
+  "schedule-os/filing-csv": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-os.csv": {
+     "sha256": "c543f77c932af256e7497234752348a9ff83b5683bba84e3e88e4276bb637d5e",
+     "size": 1234
+    }
+   },
+   "stderr": [
+    "\u2139\ufe0f  ADR / GDR source attribution: Indian-company ADRs / GDRs (INFY, IBN, HDB, WIT, RDY, ...) carry US- / Jersey- / Cayman-prefixed ISINs and remain foreign-source for FSI/TR/Form 67 under the depositary convention. If your CA prefers the underlying-issuer view, set [os].schedule_os_indian_adr_routing = 'underlying-issuer'. Either mode leaves the Schedule OS 1a(i) total unchanged.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule OS review to <tmp>/out/schedule-os.csv with 1 qualifying ordinary dividend payment(s) (1 foreign-source, 0 Indian-source)\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL 1a(i) ordinary dividends (rounded \u20b9): 228\n"
+   ]
+  },
+  "schedule-os/filing-xlsx": {
+   "exit_code": 0,
+   "outputs": {
+    "schedule-os.xlsx": {
+     "members": [
+      "docProps/app.xml 484dc746 205",
+      "docProps/core.xml 93b79f27 459",
+      "xl/theme/theme1.xml 239c5c99 10140",
+      "xl/worksheets/sheet1.xml 45ffff43 4149",
+      "xl/worksheets/sheet2.xml 227fe07c 2684",
+      "xl/styles.xml 805e89ee 3755",
+      "_rels/.rels 8aeb47b7 534",
+      "xl/workbook.xml de37cbda 860",
+      "xl/_rels/workbook.xml.rels 2e725eab 653",
+      "[Content_Types].xml 581be1a5 1120"
+     ],
+     "sha256": "379ac0119f785a5113cc3cc98587958f02ae4b726cd442bc31874bdb82998668",
+     "size": 7044
+    }
+   },
+   "stderr": [
+    "\u2139\ufe0f  ADR / GDR source attribution: Indian-company ADRs / GDRs (INFY, IBN, HDB, WIT, RDY, ...) carry US- / Jersey- / Cayman-prefixed ISINs and remain foreign-source for FSI/TR/Form 67 under the depositary convention. If your CA prefers the underlying-issuer view, set [os].schedule_os_indian_adr_routing = 'underlying-issuer'. Either mode leaves the Schedule OS 1a(i) total unchanged.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule OS review to <tmp>/out/schedule-os.xlsx with 1 qualifying ordinary dividend payment(s) (1 foreign-source, 0 Indian-source)\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "  TOTAL 1a(i) ordinary dividends (rounded \u20b9): 228\n"
+   ]
+  },
+  "schedule-tr/filing-csv": {
+   "exit_code": 3,
+   "outputs": {
+    "schedule-tr.csv": {
+     "sha256": "ae6af2ed8c0d8ed0c5e17764b1ca70cf6414baeeaf5057c0bfcc9b4005c39ad7",
+     "size": 313
+    }
+   },
+   "stderr": [
+    "\u26a0\ufe0f  INDIAN TAX CALCULATION REQUIRED: Schedule FSI column (d) and Form 67 column 7 are left blank where Indian tax attributable to foreign income cannot be derived from broker data. Rule 128(5)(i) limits FTC to the lower of Indian tax payable on that income and eligible foreign tax, but does not prescribe an average or marginal-rate formula. For ordinary income, Promac Engineering v ACIT (ITA 501/Bang/2018, paras 12-13) applied `foreign income x average Indian tax rate`; section 2(10) defines that average as `Indian income-tax on total income / total income`. Promac was for pre-Rule-128 AY 2014-15, and the Karnataka High Court later disposed the Revenue's appeal on monetary limits with the legal question kept open; no reported ruling was found settling average versus marginal rate under Rule 128(5)(i). Do not substitute foreign tax withheld. Confirm the method under the relevant DTAA/current law and any special-rate treatment, then enter the result manually. To have the tool fill it, add an exact [[form67.tax_payable_overrides]] amount for the country's DIVIDEND row and, when its Schedule FSI Other Sources row also holds interest or other income, one for INTEREST_INCOME or OTHERS too.\n",
+    "\n",
+    "\u26a0\ufe0f  Schedule TR tax relief and section are LEFT BLANK \u2014 not auto-populated (no verified DTAA path or incomplete \u00a791 evidence). Supply exact Form 67 evidence where applicable and fill manually before filing.\n",
+    "\n",
+    "\u2139\ufe0f  Foreign Taxpayer Identification Number is BLANK for one or more countries where foreign tax was paid. On Schedule FSI / TR this number is generally MANDATORY when claiming foreign-tax relief under section 90 / 90A / 91 \u2014 leaving it blank can delay processing or cause the relief to be denied. The IBKR statement does not carry your foreign TIN, so add it to user.toml under [account.foreign_tins], keyed by the country's ISO 3166-1 alpha-2 code (e.g. US = \"123456789\"; run `ibkr-fa init` for an annotated template), then re-run \u2014 one entry fills BOTH Schedule FSI and Schedule TR. If that country did not allot you a TIN, enter your passport number instead.\n",
+    "\n",
+    "\u26a0\ufe0f  **Black Money Act disclosure reminder**: Under the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015, you (as an Indian resident) MUST disclose every foreign asset and every foreign income source on ITR-2 each assessment year. Filing an ITR but omitting the Schedule FA disclosure can trigger a flat \u20b910 lakh penalty under Section 43, irrespective of the tax position. Since Finance (No.2) Act, 2024 (effective 1 October 2024), Section 43 has a \u20b920 lakh aggregate-value carve-out covering ALL foreign assets other than immovable property \u2014 the penalty does not apply where the aggregate value of such assets does not exceed \u20b920 lakh at any time during the relevant previous year (the statutory test is a peak-balance test against the previous year, not a year-end snapshot). Wilful non-disclosure additionally carries 6 months to 7 years rigorous imprisonment under Section 50; Finance Act, 2026 (Act 4 of 2026; Presidential assent 30 March 2026) inserted a matching \u20b920 lakh aggregate-foreign-asset (other than immovable property) proviso to Section 50 (and Section 49), deemed to have been inserted with effect from 1 October 2024 \u2014 so the Section 50 carve-out now mirrors the Section 43 carve-out at the same threshold and effective date.\n",
+    "   Undisclosed foreign income / asset value attracts a flat 30% tax under Section 3, and a penalty of 300% of that tax (~90% of the undisclosed value) under Section 41 \u2014 for a combined exposure of ~120% of the undisclosed value, in addition to the Section 43 fixed penalty and any Section 50 prosecution.\n",
+    "   The Schedule FA / OS / CG output ibkr-fa produces is the *mechanically correct* disclosure; the *decision to file* the return is yours. Do not defer filing without consulting a CA familiar with foreign-asset disclosure. RNOR (resident-but-not-ordinarily-resident) assessees have a Section 2 carve-out; current Indian residents (the default for someone living in India \u2265 2 years) are squarely in scope. Note that the 2019 retrospective amendment (Finance Act, 2019) extends BMA to non-residents / NRIs in respect of foreign assets acquired *while they were resident* \u2014 consult a CA before assuming non-resident status fully exempts you.\n",
+    "   This advisory fires on every ibkr-fa subcommand run and cannot be silenced via --quiet (tax-safety diagnostics are non-quietable by design).\n",
+    "\n",
+    "\u2139\ufe0f  **ITR form selection**: Foreign-asset / foreign-income holders cannot use ITR-1 (Sahaj) or ITR-4 (Sugam) \u2014 both form headers explicitly exclude anyone with assets located outside India. The two applicable forms are:\n",
+    "   * **ITR-2** \u2014 default for ibkr-fa users. Use if your income consists of salary + house property + capital gains + foreign assets / income + other sources, with NO business or profession income.\n",
+    "   * **ITR-3** \u2014 required if you ALSO have business or profession income (intraday equity trading, F&O / derivatives, freelance / consulting fees, professional income, partnership-firm distributive share, ...). A presumptive-scheme filer under \u00a744AD/44ADA/44AE who would otherwise use ITR-4 also falls back to ITR-3 once they hold foreign assets.\n",
+    "   Long-term and short-term capital gains from delivery-based equity (the ibkr-fa use case) are *typically* NOT business income and remain in ITR-2 territory when treated as capital assets / investments \u2014 but CBDT Circular 6/2016 recognises that listed shares can ALSO be held as stock-in-trade, in which case the gains become business income and ITR-3 applies. The fact-specific tests (frequency, intent, treatment in books) outside the >12-month safe harbor put the burden on the assessee; if you actively trade your foreign equity as a business, treat the income as business income and use ITR-3. Intraday equity trades are speculative transactions under Section 43(5), generally reported as speculative business income. Section 43(5) proviso (d) excludes eligible derivatives on a prescribed/notified recognised stock exchange from that speculative definition; foreign-exchange derivatives do not automatically qualify. Either business classification pushes you to ITR-3. ibkr-fa cannot tell from your IBKR statement alone whether you have business income elsewhere; this is your call. When in doubt, consult a CA.\n"
+   ],
+   "stdout": [
+    "Schedule TR \u2014 Summary of Tax Relief Claimed\n",
+    "Wrote 1 TR rows to <tmp>/out/schedule-tr.csv\n",
+    "  Input format: activity-statement\n",
+    "  Account: U***5678\n",
+    "  Financial year: 2025-04-01 to 2026-03-31\n",
+    "\n",
+    "  Per-country breakdown:\n",
+    "    cbdt_country_code | iso_alpha2 | country_name_portal | foreign_tax_inr_total_portal_displayed | event_count\n",
+    "    2 | US | UNITED STATES OF AMERICA | INR 34 | 2\n",
+    "\n",
+    "  Total foreign tax paid (portal-displayed): INR 34\n",
+    "  Total foreign tax paid (full precision): INR 34.203\n",
+    "  Tax relief and section under which claimed: LEFT BLANK \u2014 not auto-populated (no verified DTAA path or incomplete \u00a791 evidence); provide exact Form 67 evidence where applicable and fill manually before filing\n",
+    "\n",
+    "  Upstream consumption:\n",
+    "    FSI rows consumed: 2\n",
+    "    OS dividends: 1\n",
+    "    OS interest: 0\n",
+    "    CG STCG: 1\n",
+    "    CG LTCG: 0\n",
+    "    WHT in FY: 1\n",
+    "\n",
+    "  Exclusions:\n",
+    "    CG indian-source: 0\n",
+    "    CG out-of-fy: 0\n",
+    "    LTCG pre-cutover: 0\n",
+    "    LTCG indian-source: 0\n",
+    "    LTCG out-of-fy: 0\n",
+    "    interest out-of-fy: 0\n",
+    "\n",
+    "  AY policy:\n",
+    "    portal_labels_assessment_year_start: 2026\n",
+    "    fx_policy_appropriate_for_ay: True\n",
+    "    wht_fx_policy_appropriate_for_ay: True\n"
+   ]
+  },
+  "stockplan-income": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67.csv": {
+     "sha256": "8a566ebc286b6ad0e297a91e7b659cd74298e588cb63df6fa5264dbbbe92a5fb",
+     "size": 479
+    },
+    "schedule-fsi.csv": {
+     "sha256": "62743934e18cfe90980e7ecc0031e2e689a3a4d678bce049b8cb0f88eccc930d",
+     "size": 321
+    },
+    "schedule-os.csv": {
+     "sha256": "45f210c394d5f959566a7ea4ff6bc44c1c66f1976c3713cfe276fe1a939c37bf",
+     "size": 1256
+    },
+    "schedule-tr.csv": {
+     "sha256": "3210799b97974f85e717c85a46ac93642359fec8fa9d881efe8cf83cbc043f54",
+     "size": 328
+    }
+   },
+   "stderr": [
+    "warning: zero StockPlan sales are not proven: stockplan-income does not read the Capital Gain/Loss workbook, so a sale would be missing from Schedule CG and Schedule FSI. Run stockplan-all to prove zero sales, or check the Capital Gains Report for sales before filing.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule OS / FSI / TR filing CSVs and official Form 67 CSV for FY 2025-26 to <tmp>/out.\n",
+    "  Dividends: 2; withholdings: 2 (in-FY FTC withholding USD 1.68).\n",
+    "  Schedule OS foreign-source 1a(i) detail rows: 2; Schedule FSI rows: 1; Schedule TR rows: 1; Form 67 entries: 1.\n"
+   ]
+  },
+  "stockplan-income/debug": {
+   "exit_code": 3,
+   "outputs": {
+    "form-67-debug.csv": {
+     "sha256": "0cc4a4731e052c0fe257c226df45d28f282050ad58b7c88c889541569dcba438",
+     "size": 844
+    },
+    "form-67.csv": {
+     "sha256": "8a566ebc286b6ad0e297a91e7b659cd74298e588cb63df6fa5264dbbbe92a5fb",
+     "size": 479
+    },
+    "schedule-fsi-debug.csv": {
+     "sha256": "c7fe5de58e6abb017171947d194a4b91b91b5988672b654e41998705f6fafe2d",
+     "size": 566
+    },
+    "schedule-fsi.csv": {
+     "sha256": "62743934e18cfe90980e7ecc0031e2e689a3a4d678bce049b8cb0f88eccc930d",
+     "size": 321
+    },
+    "schedule-os-debug.csv": {
+     "sha256": "50834c24df23dcfd9d4507c271a78b16267d3f0b4449a7b89f366779cd395320",
+     "size": 1220
+    },
+    "schedule-os.csv": {
+     "sha256": "45f210c394d5f959566a7ea4ff6bc44c1c66f1976c3713cfe276fe1a939c37bf",
+     "size": 1256
+    },
+    "schedule-tr-debug.csv": {
+     "sha256": "1515b7b120cf7cfb245f71501cd18d79eb5f2c843799a1fee5928c29d03022cc",
+     "size": 472
+    },
+    "schedule-tr.csv": {
+     "sha256": "3210799b97974f85e717c85a46ac93642359fec8fa9d881efe8cf83cbc043f54",
+     "size": 328
+    }
+   },
+   "stderr": [
+    "warning: zero StockPlan sales are not proven: stockplan-income does not read the Capital Gain/Loss workbook, so a sale would be missing from Schedule CG and Schedule FSI. Run stockplan-all to prove zero sales, or check the Capital Gains Report for sales before filing.\n",
+    "Wrote non-filing debug audits: <tmp>/out/schedule-os-debug.csv, <tmp>/out/schedule-fsi-debug.csv, <tmp>/out/schedule-tr-debug.csv, <tmp>/out/form-67-debug.csv.\n"
+   ],
+   "stdout": [
+    "Wrote Schedule OS / FSI / TR filing CSVs and official Form 67 CSV for FY 2025-26 to <tmp>/out.\n",
+    "  Dividends: 2; withholdings: 2 (in-FY FTC withholding USD 1.68).\n",
+    "  Schedule OS foreign-source 1a(i) detail rows: 2; Schedule FSI rows: 1; Schedule TR rows: 1; Form 67 entries: 1.\n"
+   ]
+  }
+ },
+ "portal-writers": {
+  "fa-a2/empty": {
+   "sha256": "2048ced416ecdc2ce3bb4ae3d43350d6dbea8a33228c5cd1271116ab64809f05",
+   "size": 229
+  },
+  "fa-a2/manual-fill": {
+   "sha256": "306e8c49e2fd53529ebc458bce1a52c50c922980c757cc631b5be81e81aac2d9",
+   "size": 362
+  },
+  "fa-a2/populated": {
+   "sha256": "5794d97f88c393f279b4f67d23eaaba4894b39baeb7934037457978421ce7f1d",
+   "size": 511
+  },
+  "fa-a3/empty": {
+   "sha256": "eb62e528e52b85cac23266a67ccec0753d0bd31fe704f87ee3bebdf462d1ad98",
+   "size": 380
+  },
+  "fa-a3/manual-fill": {
+   "sha256": "4810f451eaac0c44f0b32943feda00cb59639b5aa8bfaf5b4e45b1488b5888fc",
+   "size": 490
+  },
+  "fa-a3/populated": {
+   "sha256": "9386816c1905fe153c2806c84f8813f77638e43814d4904f7bfc3068ddffd1c1",
+   "size": 610
+  },
+  "form67/empty": {
+   "sha256": "59b2a6d9d7c1a3fd714f794266c274ab3431e7766dffc5fd5f60d04acb77bdd7",
+   "size": 433
+  },
+  "form67/populated": {
+   "sha256": "812621194ec2eaf36f0b35a4b45eb0c6f0d0ea078f11ffbea627eb0a03cd8e32",
+   "size": 531
+  },
+  "fsi/empty": {
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size": 0
+  },
+  "fsi/manual-fill": {
+   "sha256": "ba19c873dd604c7256fd70d65abd23c2e2f55f4eddefd5a06543b197db2f99fb",
+   "size": 1541
+  },
+  "fsi/populated": {
+   "sha256": "a2ba08bd0af6a1afe87cb7b1885c213421e03dea305968ad905257c306f4a3a4",
+   "size": 915
+  },
+  "tr/empty": {
+   "sha256": "426056ef4fb998a4c925777ebc802fe0bf7761c3dd6f47e1147c99e3af6e56b2",
+   "size": 280
+  },
+  "tr/manual-fill": {
+   "sha256": "78817064e0d35d8d43b34cbf975ff226fa6ca3d4c3faa09fdf2c675101f28697",
+   "size": 315
+  },
+  "tr/populated": {
+   "sha256": "0f1287819a6c4253dc77c19d3426c0a6b114060ee53082d5c022ce816b169412",
+   "size": 413
+  },
+  "tr/quicko-block": {
+   "sha256": "8e723bde969bef13997cfd3a50e040f215bfd48aaba95e049fd91e1913e953f9",
+   "size": 654
+  }
+ },
+ "schedule-cg-filing-xlsx": {
+  "all-editable-round-to-zero/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 4e7535e5 10321",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "0825a7ede96d98d9ccd5127bcd9c1eafe18dd05b188e09d89ce3e0768fd5b365",
+   "size": 7168
+  },
+  "all-editable-round-to-zero/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml f93d292d 3082",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 587e0423 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "6dce5cfb10a9eab178dc39eb728ccdd20e1bffa07d3c85727f4d4f747eb3d344",
+   "size": 6065
+  },
+  "all-editable-round-to-zero/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 053db5b4 10399",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "ae164c086465c313f5033419ab976002620418f44762f12b40cc308d94598a4f",
+   "size": 7204
+  },
+  "all-editable-round-to-zero/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 745bfe9a 3096",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 53daa880 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "e48f50bdbcbe2a4a3a70baaecd2a57ff080e4bd3086c26d8684f350121053219",
+   "size": 6071
+  },
+  "both-sections-rounding-note/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml d70b69ef 10436",
+    "xl/worksheets/sheet2.xml 0deb6d5b 9999",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 2146db89 1045",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "5248ffeba5d2968fec23991d3613bfba185ceb67f261bde0f05d037e6b367eef",
+   "size": 9792
+  },
+  "both-sections-rounding-note/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 71408ba6 3863",
+    "xl/worksheets/sheet2.xml 0bf16de3 3863",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 4bef9854 1043",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "074d11dd7b483c4dc4e3ef7e54f414b9ed0dc4be79e54f58fa60d24d5de3b30f",
+   "size": 8011
+  },
+  "both-sections-rounding-note/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 7b0fb8d0 10514",
+    "xl/worksheets/sheet2.xml b9220e9a 9989",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 21f29e38 1045",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "f937f76c89cb41a1ff72811bf85ed08b826bdee2f0bfa57c506de0979bdd0aa9",
+   "size": 9825
+  },
+  "both-sections-rounding-note/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 98c80be7 3877",
+    "xl/worksheets/sheet2.xml d18898df 3863",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml b6aebd45 1043",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "da677d98882585d59d1615dd430fed7587f59dcca509d6e29b436fd40126a7d8",
+   "size": 8015
+  },
+  "both-sections/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 5c710d41 10268",
+    "xl/worksheets/sheet2.xml e9bb8f47 9831",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 2146db89 1045",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "4d0d1aaa95fe2ad46c4df86f696f0e83f54e261698a085012e4f80d4b72719d3",
+   "size": 9637
+  },
+  "both-sections/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 1c9e1c02 3695",
+    "xl/worksheets/sheet2.xml 97676097 3695",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 4bef9854 1043",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "f1d53882300c4ec21ab63f484ed8e84f226ad066b554cd19520162c1b5ec1b3f",
+   "size": 7855
+  },
+  "both-sections/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 99ca1ec5 10346",
+    "xl/worksheets/sheet2.xml a9bddf59 9821",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 21f29e38 1045",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "f284dc1466b5849cfb26f97a199326ceeb1112dda9e350e10538eac1ecde2081",
+   "size": 9669
+  },
+  "both-sections/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 8de5ef1a 3709",
+    "xl/worksheets/sheet2.xml a63fc82b 3695",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml b6aebd45 1043",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "563b2a394d04f6820dfd20f8bc137090f91ad2e30f0e90d3daf7a49f0c8d0bac",
+   "size": 7860
+  },
+  "component-rounding-note/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 60b4fa06 10506",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "2c7c05e70b989cbe8e63ccfce232b4572186058159bb0ad5384e899283f3a3bf",
+   "size": 7269
+  },
+  "component-rounding-note/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 10996067 3933",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "16a3a69b05704f60143cafe63f2d75a8e41aa7884135bd893d003b410f56c3b0",
+   "size": 6337
+  },
+  "component-rounding-note/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml ec8f0367 10584",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "c926ad0857a41c57f647f575b7467438b9b67c91cac30261caeac0153d4ded7c",
+   "size": 7306
+  },
+  "component-rounding-note/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml d86410e3 3947",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "15bfe2aef3d70262031f621daf61380cf166334690acff2a7c33972fe3bbc375",
+   "size": 6342
+  },
+  "empty/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 4e5956d0 2097",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 62702c44 785",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "3660410c333d0ef19683f6391d217e6bade3183c41abd3925cad6c1240d0107e",
+   "size": 5589
+  },
+  "empty/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 4e5956d0 2097",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 62702c44 785",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "3660410c333d0ef19683f6391d217e6bade3183c41abd3925cad6c1240d0107e",
+   "size": 5589
+  },
+  "empty/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 26c8c51c 2097",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 11e32445 785",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "fddcf3030652ac422f3bfb821fc22c72af72d8e5671babdbbf0bcd7216761099",
+   "size": 5589
+  },
+  "empty/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 26c8c51c 2097",
+    "xl/styles.xml a4448c63 3439",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 11e32445 785",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "fddcf3030652ac422f3bfb821fc22c72af72d8e5671babdbbf0bcd7216761099",
+   "size": 5589
+  },
+  "ltcg-loss/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 9e1dbea5 9903",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 13bf08bd 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "0192fc315d2a714f43271b06a20238c4d998eb53d0b9ae11d1e663d4c868da24",
+   "size": 7103
+  },
+  "ltcg-loss/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 0d582804 3767",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml c0b06437 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "5ac3e0433bf144b9df21bad0369bc9b77867841d29cec105316423efc1cf5635",
+   "size": 6258
+  },
+  "ltcg-loss/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 6548e44a 9893",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml bc59d2c1 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "ebe278bbad44bc6dc56bc5ba93a469fcf410b688abf1cda4321a31a81f8f319c",
+   "size": 7100
+  },
+  "ltcg-loss/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 777a26f3 3767",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml c855d27a 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "4023300723dccdf0a5aade75dc861e93130f88947fd207b15448ae9d1072670a",
+   "size": 6260
+  },
+  "rounded-zero-stcg-balance/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml a1844c9a 10333",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "3934ac15c507827c4a5c3d9843da825bad01c169fe8d10acd9b6ff388e439009",
+   "size": 7182
+  },
+  "rounded-zero-stcg-balance/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 3a39d42f 3766",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "812c66d63631d17123df37237b5f91512b9816788664b14f29e2dfb19b868e7e",
+   "size": 6255
+  },
+  "rounded-zero-stcg-balance/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml a852989e 10411",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "6c3cbb65e87ffcf43d108d005483faa6d3106ade8456d3f4e8f6bfb4c805ca54",
+   "size": 7218
+  },
+  "rounded-zero-stcg-balance/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 787a03c9 3780",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "ca11554014de60a71e6142fb7b019e5dfb74ed587abe76da81b05a69ab37d040",
+   "size": 6263
+  },
+  "split-sale-and-another-sale/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml a5e5dbfc 10339",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "60be7f4db9022969f18f0aab0010754f34056dfe675613c45f9354382e4530ab",
+   "size": 7192
+  },
+  "split-sale-and-another-sale/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml c048b29d 3766",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "bbab1548be3f1bc7e1090a97e2b5ec0dea49b5e20298c28fb4df1995af329e54",
+   "size": 6260
+  },
+  "split-sale-and-another-sale/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml c005ec48 10417",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "11d26b79a945c874ef8981f3fe92195e2a9792fe8c1275cc252f7a2dcd8b9ad4",
+   "size": 7227
+  },
+  "split-sale-and-another-sale/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 820b657b 3780",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "4ae593f8c02915785ba00e46d027bc6da1541d5c6cd2323299982e49b25b0a79",
+   "size": 6267
+  },
+  "stcg-loss/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 7015ba5f 10339",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "42f89e8d89e11ce5a31cf7263175a72a3688823feeab6784620a4a3ff8b07b54",
+   "size": 7189
+  },
+  "stcg-loss/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 49258bcb 3766",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "484f5e8941639fcbd21d85667ff4ec62e81fc4e1f19bcf5780947705907b36c9",
+   "size": 6259
+  },
+  "stcg-loss/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml b6f0a9a8 10417",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "88e01e5994392ebab1444c6180b8262f674ed17a2a210dcc5cbc4f7eb978494b",
+   "size": 7225
+  },
+  "stcg-loss/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 0b665c2d 3780",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "fe12d2730c581459653c7453a32a51136909ebfd1843159f7f3ad1ab0ba6ad00",
+   "size": 6266
+  },
+  "stcg-losses-in-two-bands/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml fce75380 10339",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "36b840fad0652813e6dad13e09e8638d02ffbb843d4198fa8ee412e916b4af89",
+   "size": 7190
+  },
+  "stcg-losses-in-two-bands/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 609b2fe1 3766",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "336bcf490ec0aa78975a79fc5465e6b39ebfd4818488c9aaffb4667d019449f4",
+   "size": 6259
+  },
+  "stcg-losses-in-two-bands/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 67e64038 10417",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "66a23cdfd3477595d6747126008af8215648ed62541c18c80cf8ebc37d6b70ec",
+   "size": 7225
+  },
+  "stcg-losses-in-two-bands/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 22d8f807 3780",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "2d20f6fe5d6383da4e1614c92e847e5b58eaccf549b8ee9787c5149cf94e9a69",
+   "size": 6266
+  },
+  "two-securities/ITR-2/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 75370414 10344",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 73a0ad0c 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "5bde79807abce9456fbd22f8867ab2e9814eeb309a4d52511f1e76eecbd0d347",
+   "size": 7195
+  },
+  "two-securities/ITR-2/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 8da84e43 3771",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 737e69d1 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "241a168957b06cead89d1303506d0269283eea207ad11e1cf381a2a09a59e8d0",
+   "size": 6263
+  },
+  "two-securities/ITR-3/debug": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 55ddd97b 10422",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 7fc7d67e 774",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "731475f0211f8796e9d4eef7b21fb7864058a94d520130c5535e0220f37d8a1d",
+   "size": 7230
+  },
+  "two-securities/ITR-3/default": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml b063e78e 3785",
+    "xl/styles.xml 831dca93 3813",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 78dac572 773",
+    "xl/_rels/workbook.xml.rels bae3eb33 507",
+    "[Content_Types].xml 8442869b 983"
+   ],
+   "sha256": "9f307d0f119340a764d3c7207ed737e2af0faa11c7ab627441a0d123e59bb91d",
+   "size": 6272
+  }
+ },
+ "schedule-os-filing-xlsx": {
+  "hand-built": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 12fc32bf 4789",
+    "xl/worksheets/sheet2.xml 0c7a4553 4967",
+    "xl/worksheets/sheet3.xml 72fab2dd 4027",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 9d4c45d4 1142",
+    "xl/_rels/workbook.xml.rels 065d080b 799",
+    "[Content_Types].xml 8fcefbdb 1257"
+   ],
+   "sha256": "3f116f18812fd0adc4433392d54046d102f190268b45fbb48c0e6718e3067095",
+   "size": 8727
+  },
+  "iso_dates": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml 43a21f4e 4156",
+    "xl/worksheets/sheet2.xml c8d51200 3628",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 931fbf05 860",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "154a104278b6b291c3bdcd871c3e62ee49adec27aae882dc59ad5f11d30e2d60",
+   "size": 7158
+  },
+  "with_dividends": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml bcf61fd1 4154",
+    "xl/worksheets/sheet2.xml c8d51200 3628",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 931fbf05 860",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "3511e642c64246e301b86fbba4075882d77f50c835064b812ac8a0a9d2c18597",
+   "size": 7157
+  },
+  "with_indian_source": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml ce01e203 4149",
+    "xl/worksheets/sheet2.xml ef7fd3b9 3105",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml d5fbd7c0 860",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "0601a49c859be8e0c728f236fc0ebd0d3ceeaf219f0ab68719485a59fadccda4",
+   "size": 7117
+  },
+  "with_interest": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml e7f28195 4147",
+    "xl/worksheets/sheet2.xml d78f5ffa 2212",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 98d3a31f 860",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "821316e322c5547c259c1c2b1e5fddc895ced88a6d4ca9abffb08ad52eb1d954",
+   "size": 6924
+  },
+  "zero_dividends": {
+   "members": [
+    "docProps/app.xml 484dc746 205",
+    "docProps/core.xml 93b79f27 459",
+    "xl/theme/theme1.xml 239c5c99 10140",
+    "xl/worksheets/sheet1.xml f89ba626 4145",
+    "xl/worksheets/sheet2.xml d78f5ffa 2212",
+    "xl/styles.xml 805e89ee 3755",
+    "_rels/.rels 8aeb47b7 534",
+    "xl/workbook.xml 98d3a31f 860",
+    "xl/_rels/workbook.xml.rels 2e725eab 653",
+    "[Content_Types].xml 581be1a5 1120"
+   ],
+   "sha256": "e07d61afc24238b59ac3dcde5e3ee75e6c815dd80853df8368059e68d479d21c",
+   "size": 6918
+  }
+ }
+}

@@ -1,0 +1,12 @@
+"BOF","U12345678","3","20250101","20251231","20260105;101500","100","100"
+"ClientAccountID","CurrencyPrimary","Name","AccountType","IBEntity"
+"U12345678","USD","Sample Holder","Individual","IBLLC-US"
+
+"CurrencyPrimary","FXRateToBase","AssetClass","SubCategory","Symbol","Description","CUSIP","ISIN","ListingExchange","IssuerCountryCode","ReportDate","Quantity","MarkPrice","PositionValue","CostBasisPrice","CostBasisMoney","Side","LevelOfDetail","OpenDateTime","HoldingPeriodDateTime"
+"USD","1","STK","COMMON","XQBB","SAMPLE ISSUER BB INC","99995B104","US99995B1044","NASDAQ","US","20251231","10","95.4","954","85.2","852","Long","LOT","20240615","20240615"
+"USD","1","STK","COMMON","XQBE","SAMPLE ISSUER BE CORP","99995D100","US99995D1000","NYSE","US","20251231","4","263.4","1053.6","251.35","1005.4","Long","LOT","20250105","20250105"
+
+"CurrencyPrimary","FXRateToBase","AssetClass","SubCategory","Symbol","Description","CUSIP","ISIN","ListingExchange","IssuerCountryCode","ReportDate","TradeDate","SettleDateTarget","TransactionType","Quantity","TradePrice","TradeMoney","Proceeds","Taxes","IBCommission","IBCommissionCurrency","NetCash","ClosePrice","Open/CloseIndicator","CostBasis","FifoPnlRealized","Buy/Sell","LevelOfDetail","OpenDateTime","HoldingPeriodDateTime"
+"USD","1","STK","COMMON","XQBD","SAMPLE ISSUER BD INC","99995A106","US99995A1060","NASDAQ","US","20250615","20250615","20250616","ExchTrade","-4","61.2","-1836","1836","0","-1.5","USD","1834.5","62.5","C","-1950","-115.5","SELL","EXECUTION","",""
+"USD","1","STK","COMMON","XQBD","SAMPLE ISSUER BD INC","99995A106","US99995A1060","NASDAQ","US","20250615","20250615","","","4","65","","","","","","","","C","260","-15.4","SELL","CLOSED_LOT","20240615;101500","20240615;101500"
+"EOF","U12345678"

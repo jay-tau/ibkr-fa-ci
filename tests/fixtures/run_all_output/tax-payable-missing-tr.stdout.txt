@@ -1,0 +1,160 @@
+
+========================================================================
+  run-all: schedule-os
+========================================================================
+Wrote Schedule OS review to <tmp>/out/schedule-os.csv with 1 qualifying ordinary dividend payment(s) (1 foreign-source, 0 Indian-source)
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+  TOTAL 1a(i) ordinary dividends (rounded ₹): 228
+
+========================================================================
+  run-all: schedule-cg
+========================================================================
+Wrote Schedule CG STCG review CSV with 1 in-FY short-term closure(s) to <tmp>/out/schedule-cg.csv
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+  TOTAL realized gain (rounded ₹): 26685
+
+========================================================================
+  run-all: schedule-cg-ltcg
+========================================================================
+Wrote Schedule CG LTCG review CSV with 0 in-FY long-term closure(s) to <tmp>/out/schedule-cg-ltcg.csv
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+  TOTAL realized gain (rounded ₹): 0
+  Excluded (STCG, handled by schedule-cg): 1 — see _excluded_stcg: audit block in the CSV
+
+========================================================================
+  run-all: schedule-fsi
+========================================================================
+Wrote Schedule FSI review file with 2 per-(country, head-of-income) row(s) to <tmp>/out/schedule-fsi.csv
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+  TOTAL income (rounded ₹): 26913
+  TOTAL foreign tax (rounded ₹): 34
+  Aggregator consumption: 1 dividend(s), 0 interest event(s), 1 STCG row(s), 0 LTCG row(s), 1 in-FY WHT row(s)
+
+  Per-(country, head) breakdown:
+    UNITED STATES OF AMERICA (CBDT 2) / Capital Gains: income ₹26685, foreign tax ₹0, 1 event(s)
+    UNITED STATES OF AMERICA (CBDT 2) / Other Sources: income ₹228, foreign tax ₹34, 1 event(s)
+
+========================================================================
+  run-all: schedule-tr
+========================================================================
+Schedule TR — Summary of Tax Relief Claimed
+Wrote 1 TR rows to <tmp>/out/schedule-tr.csv
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+
+  Per-country breakdown:
+    cbdt_country_code | iso_alpha2 | country_name_portal | foreign_tax_inr_total_portal_displayed | event_count
+    2 | US | UNITED STATES OF AMERICA | INR 34 | 2
+
+  Total foreign tax paid (portal-displayed): INR 34
+  Total foreign tax paid (full precision): INR 34.203
+  Tax relief and section under which claimed: POPULATED from exact overrides plus DTAA / §91 reference data — verify before filing
+
+  Upstream consumption:
+    FSI rows consumed: 2
+    OS dividends: 1
+    OS interest: 0
+    CG STCG: 1
+    CG LTCG: 0
+    WHT in FY: 1
+
+  Exclusions:
+    CG indian-source: 0
+    CG out-of-fy: 0
+    LTCG pre-cutover: 0
+    LTCG indian-source: 0
+    LTCG out-of-fy: 0
+    interest out-of-fy: 0
+
+  AY policy:
+    portal_labels_assessment_year_start: 2026
+    fx_policy_appropriate_for_ay: True
+    wht_fx_policy_appropriate_for_ay: True
+
+========================================================================
+  run-all: form-67
+========================================================================
+Form 67 — Statement of foreign income and Foreign Tax Credit
+Wrote 1 Form 67 entries to <tmp>/out/form-67.csv
+  Input format: activity-statement
+  Account: U***5678
+  Financial year: 2025-04-01 to 2026-03-31
+
+  Per-entry breakdown:
+    sl_no | cbdt_country_code | iso_alpha2 | country_name_portal | source_of_income | income_inr | foreign_tax_inr | foreign_tax_rate_percent | event_count
+    1 | 2 | US | UNITED STATES OF AMERICA | Dividend | INR 228 | INR 34 | 15.00% | 1
+
+  Total income from outside India (portal-displayed): INR 228
+  Total foreign tax paid (portal-displayed): INR 34
+  Total foreign tax paid (full precision): INR 34.203
+  Tax payable + DTAA article/rate + FTC credit columns: POPULATED (cols 7, 9-13) from exact overrides plus DTAA reference data (col 8 §115JB/JC special-rate still unimplemented per #235)
+
+  Upstream consumption:
+    FSI rows consumed: 2
+    OS dividends: 1
+    OS interest: 0
+    CG STCG: 1
+    CG LTCG: 0
+    WHT in FY: 1
+
+  Exclusions:
+    CG indian-source: 0
+    CG out-of-fy: 0
+    LTCG pre-cutover: 0
+    LTCG indian-source: 0
+    LTCG out-of-fy: 0
+    interest out-of-fy: 0
+
+  AY policy:
+    portal_labels_assessment_year_start: 2026
+    fx_policy_appropriate_for_ay: True
+    wht_fx_policy_appropriate_for_ay: True
+
+========================================================================
+  run-all: schedule-fa
+========================================================================
+Wrote 3 Schedule FA Table A3 row(s) to <tmp>/out/schedule-fa.csv
+  Input format: activity-statement
+  Account: U***5678
+
+⚠️  The following portal columns contain blank values. Verify each missing fact and edit the review file before pasting into the portal:
+  - Address of entity
+  - ZIP Code
+  - Nature of entity
+  - Peak value of investment during the Period
+   Address of entity is missing for these holdings; verify the issuer's address from authoritative issuer material and set address in one [[fa.entities]] block per ISIN:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+   ZIP Code is missing for these holdings; verify the issuer's postal code from authoritative issuer material and set zip in that ISIN's [[fa.entities]] block:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+   Nature of entity is missing for these holdings; verify the legal entity type from authoritative issuer material and set nature_of_entity in that ISIN's [[fa.entities]] block:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+       nature_of_entity = "Company"  # example only; verify yours
+   Peak value is blank for these holdings because price fetching was off (--no-fetch-prices) and no complete price cache was found:
+     - XQBB (US99995B1044)
+     - XQBE (US99995D1000)
+       Re-run without --no-fetch-prices to compute it.
+
+Exit status: 3 (manual-fill columns present — see above).
+
+ℹ️  No dividend activity found for the calendar year: this Activity Statement has neither a 'Dividends' nor a 'Change in Dividend Accruals' section (IBKR omits both when there were none), so the 'Total gross amount paid/credited...' column is set to 0 for every holding. This zero is inferred only from the statement provided — verify it reflects no dividend, payment-in-lieu, or other distribution activity on these holdings before filing, and edit the value if you received any not shown here.
+
+Wrote Schedule FA Table A2 (foreign custodial account) 1 row(s) to <tmp>/out/schedule-fa-a2.csv
+  ⚠️  Fill these Table A2 portal cell(s) before filing — left blank because they could not be computed with certainty:
+    - Peak Balance During the Period
+    - Closing balance
+      The closing balance is blank because the statement has no Net Asset Value section, or that section has no asset-class table with a 'Current Total' column.
+      Re-export the Activity Statement from IBKR with its Net Asset Value section and re-run. Otherwise, enter it by hand in the review CSV or XLSX, or in the portal: the account's Net Asset Value on 31 December of the requested calendar year, in its base currency, converted to INR at that date's SBI TTBR.
+     Find your account's HIGHEST total native-currency value (securities + cash) on any single day of the calendar year, then convert it to INR at that peak date's SBI TTBR. Per Rule 114F a custodial account's value INCLUDES the cash held in it, not just the securities — and the statement carries no daily account NAV, so the peak day cannot be derived.
+  ℹ️  Table A2 (the account) and Table A3 (the holdings inside it) deliberately overlap — do NOT add A2's balance to the A3 holding values when testing the Black Money Act ₹20-lakh threshold; that double-counts the same assets. Consult your CA.

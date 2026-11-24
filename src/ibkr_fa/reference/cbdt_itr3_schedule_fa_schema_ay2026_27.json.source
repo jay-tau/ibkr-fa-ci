@@ -1,0 +1,24 @@
+# Provenance for cbdt_itr3_schedule_fa_schema_ay2026_27.json
+#
+# Validation-equivalent Schedule FA extract from the official CBDT ITR-3
+# AY 2026-27 Main V1.1 JSON Schema. It contains the exact A2/A3 definitions,
+# their complete $ref closure, and Form_ITR3; descriptive annotations were
+# removed because they do not affect validation.
+#
+# upstream-file: ITR-3_2026_Main_V1.1.json
+# upstream-assessment-year: 2026-27
+# upstream-portal: https://www.incometax.gov.in/iec/foportal/downloads/income-tax-returns
+# upstream-full-schema-sha256: 66f4bd705e0e0788fdacb37eb297ace56749d791b84f2f170f4da84236c25e8b
+# extracted-at: 2026-07-20
+# extract-sha256: efb5cbdb2752d11d78ec1ff67469acfa2f15d2a4065dda3a37b4a4fb743bad2d
+#
+# Reproduce with jq:
+# jq -c '{"$schema":"http://json-schema.org/draft-04/schema#",
+#   definitions:{
+#     DtlsForeignCustodialAcc:.definitions.DtlsForeignCustodialAcc,
+#     DtlsForeignEquityDebtInterest:.definitions.DtlsForeignEquityDebtInterest,
+#     CountryCodeExcludingIndia:.definitions.CountryCodeExcludingIndia,
+#     nonEmptyString:.definitions.nonEmptyString,
+#     Form_ITR3:.definitions.Form_ITR3
+#   }} | walk(if type=="object" then del(.description) else . end)' \
+#   ITR-3_2026_Main_V1.1.json > cbdt_itr3_schedule_fa_schema_ay2026_27.json

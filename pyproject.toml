@@ -1,0 +1,121 @@
+[project]
+name = "ibkr-fa"
+version = "0.1.0"
+description = "Indian Schedule FA from IBKR Flex Query CSV (work in progress; not tax advice)"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+authors = [
+    { name = "Joel Tony", email = "github@jaytau.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "jsonschema>=4.21.0",
+    "openpyxl>=3.1.5",
+]
+
+[project.scripts]
+ibkr-fa = "ibkr_fa.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.11.8,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.152.4",
+    "markdown-it-py>=4.0.0",
+    "pre-commit>=4.6.0",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.12",
+    "ty>=0.0.34",
+]
+
+# ---------------------------------------------------------------------------
+# Tooling configuration
+# ---------------------------------------------------------------------------
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests", "scripts"]
+extend-exclude = ["data", "build"]
+
+[tool.ruff.lint]
+# Strict ruleset. We err on the side of more rules; suppress per-line/per-file
+# when there's a real reason.
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+    "N",   # pep8-naming
+    "ANN", # flake8-annotations (forces annotations on public APIs)
+    "PTH", # flake8-use-pathlib
+    "PL",  # pylint subset
+    "TRY", # tryceratops (exception-handling antipatterns)
+    "ERA", # eradicate (commented-out code)
+    "A",   # flake8-builtins
+    "C4",  # flake8-comprehensions
+    "T20", # flake8-print (catch stray print/pprint)
+    "ARG", # flake8-unused-arguments
+]
+ignore = [
+    "ANN401",  # allow `Any` in narrow places (justified per-occurrence with noqa)
+    "PLR0913", # we'll allow many args on dataclasses/builders; revisit if abused
+    "TRY003",  # explicit error messages are fine; we catch them in tests
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ANN",     # tests don't need full type annotations
+    "PLR2004", # magic numbers in test fixtures are fine
+    "ARG",     # fixtures and fakes take arguments they don't read
+]
+"scripts/**" = [
+    "T201",    # scripts can print
+]
+"src/ibkr_fa/cli.py" = [
+    "T201",    # CLI output IS the point of this module
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ty]
+# Astral's type checker; defaults are already strict (https://docs.astral.sh/ty/reference/rules/).
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=ibkr_fa",
+    "--cov-report=term-missing",
+    "--cov-fail-under=90",
+]
+filterwarnings = [
+    "error",
+]
+
+[tool.coverage.run]
+source = ["src/ibkr_fa"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+]

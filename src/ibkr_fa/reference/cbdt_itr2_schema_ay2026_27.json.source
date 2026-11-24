@@ -1,0 +1,39 @@
+# Provenance for cbdt_itr2_schema_ay2026_27.json
+#
+# The official CBDT (Central Board of Direct Taxes) JSON Schema for the
+# Income-tax Return form ITR-2, Assessment Year 2026-27. Used to validate
+# the Schedule FA JSON fragment ibkr-fa emits (Table A2
+# `DtlsForeignCustodialAcc` + Table A3 `DtlsForeignEquityDebtInterest`)
+# before writing, so the fragment imports cleanly into the official
+# offline ITR-2 utility (#39).
+#
+# Source: the "Schema" download under the ITR 2 section of the Income-tax
+# e-filing portal's Downloads > Income Tax Returns page, for
+# AY 2026-27. The download is this Main schema file.
+#
+# upstream-file: ITR-2_2026_Main_V1.2.json
+# upstream-schema-version: V1.2
+# upstream-assessment-year: 2026-27
+# upstream-json-schema-release-date: 2026-08-13
+# upstream-utility: Common Offline Utility (ITR 1, 2, 3 and ITR 4) v1.2.5
+# upstream-portal: https://www.incometax.gov.in/iec/foportal/downloads/income-tax-returns
+# json-schema-draft: draft-04
+# extracted-at: 2026-10-22
+#
+# sha256 (vendored, repo copy with LF line endings): 3a5d08a9dd6666c3b0c9e830844323aaa585a3daf7996377955a430c3c6fc044
+# sha256 (upstream original, CRLF as downloaded): 4e34389cb1cb1a0d9261fc6db8594d9bdfaf761f13d4af6b84c1862510e2aeeb
+#
+# ---------------------------------------------------------------------------
+# Vendored with content UNCHANGED. The only edit is line-ending + trailing-
+# whitespace normalisation to LF, applied automatically by the repo's
+# pre-commit hooks / `.gitattributes` (text eol=lf) — JSON is insensitive to
+# inter-token whitespace, so parsing + schema validation are unaffected. To
+# reproduce the vendored file from the upstream download:
+#     tr -d '\r' < ITR-2_2026_Main_V1.2.json | sed 's/[ \t]*$//' > vendored.json
+# (verify against the upstream CRLF sha256 first). Pinned by the LF sha256
+# above + the harness's CBDT_SCHEMA_VERSION + a checksum test; if CBDT
+# re-releases the schema (or a new AY ships), re-vendor, update BOTH sha256s
+# here + the version constant, and re-verify every Schedule FA element name /
+# enum / maxLength / required-field against it. Do NOT otherwise hand-edit
+# this file: validation correctness depends on it matching the utility's
+# schema content.

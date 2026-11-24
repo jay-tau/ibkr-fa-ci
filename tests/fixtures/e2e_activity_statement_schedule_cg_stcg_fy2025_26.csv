@@ -1,0 +1,29 @@
+Statement,Header,Field Name,Field Value,,,,,,,,,,,,,
+Statement,Data,BrokerName,Interactive Brokers LLC,,,,,,,,,,,,,
+Statement,Data,BrokerAddress,"Two Pickwick Plaza, Greenwich, CT 06830",,,,,,,,,,,,,
+Statement,Data,Title,Activity Statement,,,,,,,,,,,,,
+Statement,Data,Period,"January 1, 2023 - March 31, 2026",,,,,,,,,,,,,
+Statement,Data,WhenGenerated,"2026-04-15, 09:00:00 EDT",,,,,,,,,,,,,
+Account Information,Header,Field Name,Field Value,,,,,,,,,,,,,
+Account Information,Data,Name,Sample Holder,,,,,,,,,,,,,
+Account Information,Data,Account,U12345678,,,,,,,,,,,,,
+Account Information,Data,Account Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Customer Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Account Capabilities,Cash,,,,,,,,,,,,,
+Account Information,Data,Base Currency,USD,,,,,,,,,,,,,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,,,,,,
+Financial Instrument Information,Data,Stocks,STCG,STCG IN-FY US ISSUER,11111,US99995M1009,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,LTCG,LTCG DEFERRED HOLD GT 24MO,22222,US99995N1081,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,SURV,SURVIVING OPEN AT FY END,33333,US99995P1030,NASDAQ,1,COMMON,,,,,,,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,STCG,"2025-05-15, 10:30:00",10,150.00,180.00,-1500.00,0,1500.00,0,0,O
+Trades,Data,Order,Stocks,USD,STCG,"2025-11-20, 10:30:00",-10,180.00,180.00,1800.00,0,-1500.00,300.00,0,C
+Trades,SubTotal,,Stocks,USD,STCG,,0,,,300.00,0,0.00,300.00,0,
+Trades,Data,Order,Stocks,USD,LTCG,"2023-01-10, 11:00:00",20,50.00,90.00,-1000.00,0,1000.00,0,0,O
+Trades,Data,Order,Stocks,USD,LTCG,"2025-08-10, 11:00:00",-20,90.00,90.00,1800.00,0,-1000.00,800.00,0,C
+Trades,SubTotal,,Stocks,USD,LTCG,,0,,,800.00,0,0.00,800.00,0,
+Trades,Data,Order,Stocks,USD,SURV,"2025-06-01, 13:00:00",5,200.00,210.00,-1000.00,0,1000.00,0,0,O
+Trades,SubTotal,,Stocks,USD,SURV,,5,,,-1000.00,0,1000.00,0,0,
+Trades,Total,,Stocks,USD,,,,,,100.00,0,1000.00,1100.00,0,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code,,,
+Open Positions,Data,Summary,Stocks,USD,SURV,5,1,200.00,1000.00,210.00,1050.00,50.00,,,,

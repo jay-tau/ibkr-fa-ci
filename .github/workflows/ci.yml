@@ -1,0 +1,62 @@
+name: ci
+
+on:
+  push:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint-type-test:
+    name: Python ${{ matrix.python-version }}
+    # Skip fork PRs (they'd consume private Actions minutes); push-to-main and
+    # same-repo PRs run normally.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Pull requests validate on a single Python version to save Actions
+        # minutes; pushes to main run the full matrix (no reduced validation
+        # on main). The ternary selects the JSON array fromJSON then parses.
+        python-version: ${{ fromJSON(github.event_name == 'pull_request' && '["3.13"]' || '["3.12", "3.13", "3.14"]') }}
+    env:
+      # Every uv step runs the matrix Python; without UV_PYTHON, `uv run`
+      # follows .python-version (3.12) and rebuilds the environment on it.
+      # UV_MANAGED_PYTHON skips the runner's own Python for uv's CPython,
+      # whose stock zlib reproduces the workbook byte baselines.
+      UV_PYTHON: ${{ matrix.python-version }}
+      UV_MANAGED_PYTHON: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Lint (ruff check)
+        run: uv run ruff check --output-format=github
+
+      - name: Format check (ruff format)
+        run: uv run ruff format --check
+
+      - name: Type check (ty)
+        run: uv run ty check
+
+      - name: Tests (pytest with coverage)
+        run: uv run pytest

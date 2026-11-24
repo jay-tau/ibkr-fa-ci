@@ -1,0 +1,52 @@
+name: mermaid-validate
+
+# Validates every ```mermaid block in every .md file in the repo
+# by piping it through the Mermaid CLI (mmdc). Catches the class of
+# bug where a diagram parses cleanly enough to be saved but fails to
+# render on github.com (e.g., `;` in a sequenceDiagram Note is a
+# statement separator).
+
+on:
+  push:
+
+concurrency:
+  group: mermaid-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate mermaid blocks
+    # Skip fork PRs (installing the Node + Mermaid + uv toolchain would burn
+    # private Actions minutes); push-to-main still validates after merge.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Set up Node
+        uses: actions/setup-node@v6.1.0
+        with:
+          node-version: "22"
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli@11.14.0
+
+      - name: Set up uv (and Python via uv sync)
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            uv.lock
+            pyproject.toml
+
+      - name: Sync dev dependencies (markdown-it-py)
+        run: uv sync --frozen --python 3.12
+
+      - name: Validate mermaid blocks
+        run: uv run python3 scripts/validate_mermaid.py

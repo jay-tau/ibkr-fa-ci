@@ -1,0 +1,32 @@
+Statement,Header,Field Name,Field Value,,,,,,,,,,,,,
+Statement,Data,BrokerName,Interactive Brokers LLC,,,,,,,,,,,,,
+Statement,Data,BrokerAddress,"Two Pickwick Plaza, Greenwich, CT 06830",,,,,,,,,,,,,
+Statement,Data,Title,Activity Statement,,,,,,,,,,,,,
+Statement,Data,Period,"January 1, 2025 - December 31, 2025",,,,,,,,,,,,,
+Statement,Data,WhenGenerated,"2026-01-15, 09:00:00 EDT",,,,,,,,,,,,,
+Account Information,Header,Field Name,Field Value,,,,,,,,,,,,,
+Account Information,Data,Name,Sample Holder,,,,,,,,,,,,,
+Account Information,Data,Account,U12345678,,,,,,,,,,,,,
+Account Information,Data,Account Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Customer Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Account Capabilities,Cash,,,,,,,,,,,,,
+Account Information,Data,Base Currency,USD,,,,,,,,,,,,,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,,,,,,
+Financial Instrument Information,Data,Stocks,XQBB,SAMPLE ISSUER BB INC,11111,US99995B1044,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,XQBE,SAMPLE ISSUER BE CORP,22222,US99995D1000,NYSE,1,COMMON,,,,,,,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,XQBB,"2025-01-15, 10:30:00",4,80.00,95.40,-320.00,-0.50,320.50,0,61.60,O
+Trades,Data,Order,Stocks,USD,XQBB,"2025-03-20, 14:15:00",6,90.00,95.40,-540.00,-0.50,540.50,0,32.40,O
+Trades,SubTotal,,Stocks,USD,XQBB,,10,,,-860.00,-1.00,861.00,0,94.00,
+Trades,Data,Order,Stocks,USD,XQBE,"2025-01-15, 11:00:00",4,251.25,263.40,-1005.00,-0.40,1005.40,0,48.60,O
+Trades,SubTotal,,Stocks,USD,XQBE,,4,,,-1005.00,-0.40,1005.40,0,48.60,
+Trades,Total,,Stocks,USD,,,,,,-1865.00,-1.40,1866.40,0,142.60,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code,,,
+Open Positions,Data,Summary,Stocks,USD,XQBB,10,1,86.10,861.00,95.40,954.00,93.00,,,,
+Open Positions,Data,Summary,Stocks,USD,XQBE,4,1,251.35,1005.40,263.40,1053.60,48.20,,,,
+Net Asset Value,Header,Asset Class,Prior Total,Current Long,Current Short,Current Total,Change
+Net Asset Value,Data,Cash,0,100.00,0,100.00,100.00
+Net Asset Value,Data,Stock,0,2007.60,0,2007.60,2007.60
+Net Asset Value,Data,Total,0,2107.60,0,2107.60,2107.60
+Change in NAV,Header,Field Name,Field Value
+Change in NAV,Data,Ending Value,2107.60

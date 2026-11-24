@@ -1,0 +1,28 @@
+Statement,Header,Field Name,Field Value,,,,,,,,,,,,,
+Statement,Data,BrokerName,Interactive Brokers LLC,,,,,,,,,,,,,
+Statement,Data,BrokerAddress,"Two Pickwick Plaza, Greenwich, CT 06830",,,,,,,,,,,,,
+Statement,Data,Title,Activity Statement,,,,,,,,,,,,,
+Statement,Data,Period,"April 1, 2025 - March 31, 2026",,,,,,,,,,,,,
+Statement,Data,WhenGenerated,"2026-04-15, 09:00:00 EDT",,,,,,,,,,,,,
+Account Information,Header,Field Name,Field Value,,,,,,,,,,,,,
+Account Information,Data,Name,Sample Holder,,,,,,,,,,,,,
+Account Information,Data,Account,U12345678,,,,,,,,,,,,,
+Account Information,Data,Account Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Customer Type,Individual,,,,,,,,,,,,,
+Account Information,Data,Account Capabilities,Cash,,,,,,,,,,,,,
+Account Information,Data,Base Currency,USD,,,,,,,,,,,,,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code,,,,,,
+Financial Instrument Information,Data,Stocks,XQTA,SAMPLE ISSUER TA INC,44441,US99997A1043,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,XQTB,SAMPLE ISSUER TB INC,44442,US99997B1026,NASDAQ,1,COMMON,,,,,,,
+Financial Instrument Information,Data,Stocks,XQTD,SAMPLE ISSUER TD INC,44443,US99997C1009,NASDAQ,1,COMMON,,,,,,,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,XQTA,"2025-04-10, 10:30:00",10,100.00,120.00,-1000.00,0,1000.00,0,0,O
+Trades,Data,Order,Stocks,USD,XQTA,"2025-05-20, 10:30:00",-10,120.00,120.00,1200.00,0,-1000.00,200.00,0,C
+Trades,SubTotal,,Stocks,USD,XQTA,,0,,,200.00,0,0.00,200.00,0,
+Trades,Data,Order,Stocks,USD,XQTB,"2025-07-01, 10:30:00",10,100.00,90.00,-1000.00,0,1000.00,0,0,O
+Trades,Data,Order,Stocks,USD,XQTB,"2025-10-15, 10:30:00",-10,90.00,90.00,900.00,0,-1000.00,-100.00,0,C
+Trades,SubTotal,,Stocks,USD,XQTB,,0,,,-100.00,0,0.00,-100.00,0,
+Trades,Data,Order,Stocks,USD,XQTD,"2025-08-01, 10:30:00",10,100.00,130.00,-1000.00,0,1000.00,0,0,O
+Trades,Data,Order,Stocks,USD,XQTD,"2026-01-20, 10:30:00",-10,130.00,130.00,1300.00,0,-1000.00,300.00,0,C
+Trades,SubTotal,,Stocks,USD,XQTD,,0,,,300.00,0,0.00,300.00,0,
+Trades,Total,,Stocks,USD,,,,,,400.00,0,0.00,400.00,0,
